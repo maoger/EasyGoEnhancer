@@ -2,8 +2,8 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      1.2
-// @description  重整EasyGo代办事项
+// @version      1.2.1
+// @description  首页显示EasyGo待办事项
 // @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
 // @require      http://code.jquery.com/jquery-3.1.1.js
