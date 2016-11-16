@@ -2,9 +2,9 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      1.1
+// @version      1.2
 // @description  重整EasyGo代办事项
-// @author       Mao Yanqing
+// @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
 // @require      http://code.jquery.com/jquery-3.1.1.js
 // @updateURL    https://openuserjs.org/meta/maoger/Copyer.meta.js
@@ -12,7 +12,10 @@
 // ==/UserScript==
 
 (function() {
-    'use strict';
+	'use strict';
+
+	//定义一个数组：待办事项的类型：
+	var ToDoListName = ["业务项目","业务报告","人文财务","独立性","综合"];
 
 	// 删除首页中“待办事项”后面的伪Tags：
 	var FakeTags = document.querySelector(".NewTitle1");
@@ -30,23 +33,15 @@
 		var ToDoList = document.createElement('div');
 		var PerId ="ToDoList" + m.toString();
 		ToDoList.id = PerId;
-		ToDoList.innerText = "Mao is trying to downloading ......";
+		ToDoList.innerText = ToDoListName[m] + "is downloading ......";
 
 		// 把div容器插入到大标题“待办事项”下：
 		MaoList.insertBefore(ToDoList, MaoTitle);
 
-		var ifEmpty = "";
-		var JPerId = "#" + PerId;
-		var PerUrl = "http://www.ascendacpa.com.cn/MoreTask3.aspx " + "#tabContent__" + m.toString() + " div";
 
-		$(JPerId).load(PerUrl, function () {
-			// 判断是否为空，如果为空，则不用显示脚注“总记录”的条数
-			ifEmpty = document.getElementById(PerId).querySelector("div").innerText;
-			if(ifEmpty === ""){
-				//利用querySelector定位到有id属性的第一个div
-				var record = document.querySelector(JPerId);
-				record.removeChild(record.children[1]);
-			}
-		});
+		// 使用load()方法获取待办事项，并插入div容器中
+		var JPerId = "#" + PerId;
+		var PerUrl = "http://www.ascendacpa.com.cn/MoreTask3.aspx " + "#tabContent__" + m.toString() + " div:first";
+		$(JPerId).load(PerUrl);
 	}
 })();
