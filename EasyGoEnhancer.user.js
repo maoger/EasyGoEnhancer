@@ -19,6 +19,11 @@
 
 	// 删除首页中“待办事项”后面的伪Tags：
 	var FakeTags = document.querySelector(".NewTitle1");
+
+	// tampermonkey 在运行的时候，碰到页面有 frame 标签，会对其每一个运行脚本
+	// 这里排除没有找到相关元素的 frame
+	if (!FakeTags) return;
+	
 	for (var i = 5 - 1; i >= 0; i--) {
 		FakeTags.removeChild(FakeTags.children[1]);
 	}
