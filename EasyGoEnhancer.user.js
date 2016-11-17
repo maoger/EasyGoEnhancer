@@ -31,7 +31,7 @@
     // 这里排除没有找到相关元素的 frame
     if ($FakeTags.length === 0) return;
 
-    // 移除原先的 业务项目 等导航
+    // 移除:首页中“待办事项”栏的伪Tags
     $FakeTags.children().not(':first').remove();
 
     // 将容器插入 DOM
