@@ -2,11 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-<<<<<<< HEAD
-// @version      1.4.2
-=======
-// @version      1.4
->>>>>>> parent of 31cb9a7... V 1.4.1
+// @version      1.4.3
 // @description  首页显示EasyGo待办事项
 // @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
@@ -28,7 +24,7 @@
     var $FakeTags = $(".NewTitle1");
 
     // 新建装载数据的容器
-    var $hint = $('<span />').html('加载数据中，请稍后...');
+    var $hint = $('<span />').html('加载数据中，请稍候...');
     var $container = $('<div />');
 
     // tampermonkey 在运行的时候，碰到页面有 frame 标签，会对其每一个运行脚本
@@ -52,7 +48,7 @@
         .css({
         'text-align': 'left'
         })
-        .html('<span>正在加载<b>' + name + '</b>中，请稍后...</span>');
+        .html('<span>正在加载<b>' + name + '</b>中，请稍候...</span>');
     $container.append($elt);
 
     // 加载数据
