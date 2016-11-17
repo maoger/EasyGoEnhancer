@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      1.4.3
+// @version      1.5
 // @description  首页显示EasyGo待办事项
 // @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
@@ -23,7 +23,7 @@
     // 定位：首页中“待办事项”栏的伪Tags
     var $FakeTags = $(".NewTitle1");
 
-    // 新建装载数据的容器
+    // 新建:装载数据的容器
     var $hint = $('<span />').html('加载数据中，请稍候...');
     var $container = $('<div />');
 
@@ -55,7 +55,7 @@
     var PerUrl = "http://www.ascendacpa.com.cn/MoreTask3.aspx?ind=" + (i+1).toString() + " " + "#tabContent__" + i.toString() + " " + "div:first tr:gt(0)";
     $elt.load(PerUrl, function(response, status, xhr) {
         if (status === 'error') {
-            $(this).html('<span style="color: red;">加载<b>' + $(this).attr('data-name') + '</b>失败</span>');
+            $(this).html('<span style="color: red;">加载<b>' + $(this).attr('data-name') + '</b>失败！</span>');
         }
     });
     }
