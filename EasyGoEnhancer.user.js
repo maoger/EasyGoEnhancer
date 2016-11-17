@@ -33,15 +33,29 @@
 		var ToDoList = document.createElement('div');
 		var PerId ="ToDoList" + m.toString();
 		ToDoList.id = PerId;
-		ToDoList.innerText = ToDoListName[m] + "is downloading ......";
+
 
 		// 把div容器插入到大标题“待办事项”下：
 		MaoList.insertBefore(ToDoList, MaoTitle);
 
+		// 新建一个table容器：
+		var MaoTable = document.createElement('table');
+		MaoTable.className = "tablebox";
+		MaoTable.border = "0";
+		MaoTable.style = "border-collapse:collapse";
+		var MaoTbody = document.createElement("tbody");
+		MaoTbody.id = "ToDoListTable" + m.toString();
+		MaoTbody.textContent = ToDoListName[m] + "is downloading ......";
+
+		// 在div容器内插入table空白表格用于格式化显示“待办事项”
+		ToDoList.appendChild(MaoTable);
+		MaoTable.appendChild(MaoTbody);
+
+
 
 		// 使用load()方法获取待办事项，并插入div容器中
-		var JPerId = "#" + PerId;
-		var PerUrl = "http://www.ascendacpa.com.cn/MoreTask3.aspx " + "#tabContent__" + m.toString() + " div:first";
+		var JPerId = "#" + "ToDoListTable" + m.toString();
+		var PerUrl = "http://www.ascendacpa.com.cn/MoreTask3.aspx " + "#tabContent__" + m.toString() + " div:first tr:gt(0)";
 		$(JPerId).load(PerUrl);
 	}
 })();
