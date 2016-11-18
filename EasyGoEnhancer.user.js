@@ -2,8 +2,8 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      1.5.3
-// @description  首页显示EasyGo待办事项
+// @version      1.5.4
+// @description  重整EasyGo待办事项，直接首页呈现明细。
 // @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
 // @require      http://code.jquery.com/jquery-3.1.1.js
@@ -24,7 +24,7 @@
     var $FakeTags = $(".NewTitle1");
 
     // 新建：装载数据的容器
-    var $container = $("<div />");
+    var $container = $("<div/>");
 
     // tampermonkey 在运行的时候，碰到页面有 frame 标签，会对其每一个运行脚本
     // 这里排除没有找到相关元素的 frame
@@ -45,7 +45,7 @@
         .attr("data-name", name)
         .addClass("tablebox")
         .css({
-        "text-align": "left"
+            "text-align": "left"
         })
         .html("<span>正在加载<b>" + name + "</b>中，请稍候...</span>");
     $container.append($elt);
@@ -58,4 +58,5 @@
         }
     });
     }
+
 })();
