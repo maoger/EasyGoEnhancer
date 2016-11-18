@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      1.5
+// @version      1.5.1
 // @description  首页显示EasyGo待办事项
 // @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
@@ -24,7 +24,6 @@
     var $FakeTags = $(".NewTitle1");
 
     // 新建:装载数据的容器
-    var $hint = $('<span />').html('加载数据中，请稍候...');
     var $container = $('<div />');
 
     // tampermonkey 在运行的时候，碰到页面有 frame 标签，会对其每一个运行脚本
@@ -38,7 +37,7 @@
     $container.insertAfter($FakeTags);
 
     // 请求并获取每一项的 ToDo
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0, max = ToDoListName.length; i < max; i++) {
     var name = ToDoListName[i];
 
     // 构建包裹元素
