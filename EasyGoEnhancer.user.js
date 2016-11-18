@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.1
+// @version      2.2.1
 // @description  重整EasyGo待办事项，直接首页呈现明细。
 // @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
@@ -99,6 +99,7 @@
                     if ( m >= 100 ) {
                         clearInterval(loadingRate);
                         setTimeout(function(){
+                            $loadContainer.css("margin","0px");
                             $bar.css({"width" : "0%","height":"0px"});
                         },600);
                     }
