@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.0
+// @version      2.1
 // @description  重整EasyGo待办事项，直接首页呈现明细。
 // @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
@@ -40,7 +40,7 @@
     var $loadContainer = $("<div/>")
         .addClass("barSpace")
         .css({
-            "margin" : "1px 0px",
+            "margin" : "0.25px 0px",
             "background" : "grey",
             "border-radius" : "1px",
         });
@@ -53,11 +53,11 @@
         .attr("id" , "barsmooth" )
         .addClass("smooth")
         .css({
-            "height" : "1px",
+            "height" : "0.25px",
             "width" : "0%",
             "border-radius" : "1px",
             "display" : "block",
-            "box-shadow" : "0px 0px 10px 1px #3B8CF8",
+            "box-shadow" : "0px 0px 10px 1px #CC66FF",// 原来这里使用的是3B8CF8
             "background-color" : "#fff"
         });
 
@@ -97,8 +97,10 @@
                         $bar.css("width",m.toString() + "%");
                     }
                     if ( m >= 100 ) {
-                        $bar.css("width" , "100%");
                         clearInterval(loadingRate);
+                        setTimeout(function(){
+                            $bar.css({"width" : "0%","height":"0px"});
+                        },600);
                     }
                 },10);
             }
