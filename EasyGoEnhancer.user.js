@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      1.5.2
+// @version      1.5.3
 // @description  首页显示EasyGo待办事项
 // @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
@@ -14,7 +14,7 @@
 (function() {
     'use strict';
 
-    // 待办事项所在子网页
+    // 定义：“待办事项”所在子网页
     var url = "http://www.ascendacpa.com.cn/MoreTask3.aspx";
 
     //定义一个数组：待办事项的类型
@@ -23,14 +23,14 @@
     // 定位：首页中“待办事项”栏的伪Tags
     var $FakeTags = $(".NewTitle1");
 
-    // 新建:装载数据的容器
+    // 新建：装载数据的容器
     var $container = $("<div />");
 
     // tampermonkey 在运行的时候，碰到页面有 frame 标签，会对其每一个运行脚本
     // 这里排除没有找到相关元素的 frame
     if ($FakeTags.length === 0) return;
 
-    // 移除:首页中“待办事项”栏的伪Tags
+    // 移除：首页中“待办事项”栏的伪Tags
     $FakeTags.children().not(":first").remove();
 
     // 将容器插入 DOM
