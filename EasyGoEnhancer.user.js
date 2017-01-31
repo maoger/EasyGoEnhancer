@@ -2,8 +2,8 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.3.2
-// @description  重整EasyGo待办事项，直接首页呈现明细。
+// @version      2.3.3
+// @description  重整EasyGo首页待办事项的显示方式。
 // @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
 // @require      http://code.jquery.com/jquery-3.1.1.js
@@ -41,7 +41,7 @@
         .html("本月已工作：");
 
     var $GSGL_wb1 = $("<td/>")
-        .html("&nbsp;个小时；");
+        .html("&nbsp;个小时，");
 
     var $GSGL_cc = $("<td/>")
         .html("本月已出差：");
