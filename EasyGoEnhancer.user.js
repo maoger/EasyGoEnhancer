@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.3.3
+// @version      2.3.4
 // @description  重整EasyGo首页待办事项的显示方式。
 // @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
@@ -35,6 +35,8 @@
 
     // 新建：装载 待办事项 数据的容器
     var $DBSX_Container = $("<div/>");
+
+    /*
 
     // 新建：装载 工时管理 数据的容器
     var $GSGL_Container = $("<span/>")
@@ -70,6 +72,8 @@
     $GSGL_cc.insertAfter($GSGL_wb1);
     $GSGL_trip.insertAfter($GSGL_cc);
     $GSGL_wb2.insertAfter($GSGL_trip);
+
+    */
 
 
     // tampermonkey 在运行的时候，碰到页面有 frame 标签，会对其每一个运行脚本
@@ -157,10 +161,14 @@
         });
     }
 
+    /*
+
     // 加载：工时管理 之 ①当月已报工时、②当月出差天数
     var GSGL_gs = GSGL_url + " " + "#tabContent__0 div:eq(1) tr:last td:eq(1)";
     $GSGL_gs.load(GSGL_gs);
 
     var GSGL_trip = GSGL_url + " " + "#tabContent__0 div:eq(1) tr:last td:eq(2)";
     $GSGL_trip.load(GSGL_trip);
+
+    */
 })();
