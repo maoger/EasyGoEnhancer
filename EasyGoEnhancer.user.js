@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.3.4
+// @version      2.4.0
 // @description  重整EasyGo首页待办事项的显示方式。
 // @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
@@ -22,7 +22,7 @@
     var DBSX_url = "http://www.ascendacpa.com.cn/MoreTask3.aspx";
 
     // 定义：“工时管理”所在子网页
-    var GSGL_url = "http://www.ascendacpa.com.cn/Module/Framework/Acpa/Manhour/report.aspx";
+    //var GSGL_url = "http://www.ascendacpa.com.cn/Module/Framework/Acpa/Manhour/report.aspx";
 
     // 定义一个数组：待办事项的类型
     var ToDoListName = ["业务项目","业务报告","人文财务","独立性","综合"];
@@ -31,7 +31,7 @@
     var $FakeTags = $(".NewTitle1");
 
     // 定位：首页中“生日提醒”滚动栏
-    var $spanBirthdayName = $("#spanBirthdayName");
+    //var $spanBirthdayName = $("#spanBirthdayName");
 
     // 新建：装载 待办事项 数据的容器
     var $DBSX_Container = $("<div/>");
@@ -111,8 +111,20 @@
             "background-color" : "#fff"
         });
 
-    // 插入：将 进度条 插入 进度条容器中
+    // 插入：将“进度条”插入“进度条容器”中
     $loadContainer.append($bar);
+
+    // 新建：名为“动态报备”的快捷标签
+    var $DTBB = $('<a/>')
+        .attr("href","Module/Framework/Acpa/Project/UserScheduleDynamic.aspx")
+        .css({
+        "margin-right": "30px",
+        "color":"#333",
+        })
+        .html("动态报备");
+
+    // 将“动态报备”的快捷标签插入到“待办事项”按钮后
+    $FakeTags.append($DTBB);
 
     // 定义：一个Number类型变量，用于设置进度条的width的百分比
     var m = 0;
