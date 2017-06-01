@@ -2,11 +2,11 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.4.0
+// @version      2.5
 // @description  重整EasyGo首页待办事项的显示方式。
 // @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
-// @require      http://code.jquery.com/jquery-3.1.1.js
+// @require      http://code.jquery.com/jquery-3.2.1.js
 // @updateURL    https://openuserjs.org/meta/maoger/EasyGoEnhancer.meta.js
 
 // ==/UserScript==
@@ -21,22 +21,21 @@
     // 定义：“待办事项”所在子网页
     var DBSX_url = "http://www.ascendacpa.com.cn/MoreTask3.aspx";
 
-    // 定义：“工时管理”所在子网页
-    //var GSGL_url = "http://www.ascendacpa.com.cn/Module/Framework/Acpa/Manhour/report.aspx";
-
     // 定义一个数组：待办事项的类型
     var ToDoListName = ["业务项目","业务报告","人文财务","独立性","综合"];
 
     // 定位：首页中“待办事项”栏的伪Tags
     var $FakeTags = $(".NewTitle1");
 
-    // 定位：首页中“生日提醒”滚动栏
-    //var $spanBirthdayName = $("#spanBirthdayName");
-
     // 新建：装载 待办事项 数据的容器
     var $DBSX_Container = $("<div/>");
 
     /*
+    // 定义：“工时管理”所在子网页
+    var GSGL_url = "http://www.ascendacpa.com.cn/Module/Framework/Acpa/Manhour/report.aspx";
+
+    // 定位：首页中“生日提醒”滚动栏
+    var $spanBirthdayName = $("#spanBirthdayName");
 
     // 新建：装载 工时管理 数据的容器
     var $GSGL_Container = $("<span/>")
@@ -72,9 +71,7 @@
     $GSGL_cc.insertAfter($GSGL_wb1);
     $GSGL_trip.insertAfter($GSGL_cc);
     $GSGL_wb2.insertAfter($GSGL_trip);
-
     */
-
 
     // tampermonkey 在运行的时候，碰到页面有 frame 标签，会对其每一个运行脚本
     // 这里排除没有找到相关元素的 frame
@@ -174,13 +171,27 @@
     }
 
     /*
-
     // 加载：工时管理 之 ①当月已报工时、②当月出差天数
     var GSGL_gs = GSGL_url + " " + "#tabContent__0 div:eq(1) tr:last td:eq(1)";
     $GSGL_gs.load(GSGL_gs);
 
     var GSGL_trip = GSGL_url + " " + "#tabContent__0 div:eq(1) tr:last td:eq(2)";
     $GSGL_trip.load(GSGL_trip);
-
     */
+})();
+
+(function() {
+    'use strict';
+    /* 2017.06.01更新：
+        1、修复：打印按钮功能。
+        2、说明：原网页只支持IE下的ActiveX控件直接调用打印方法，诸如：document.all.WebBrowser.ExecWB(8, 1);
+            而且一般情况下，需要添加EasyGo为信任站点，并设置“对未标记为可安全执行脚本的ActiveX控件初始化并执行脚本”为“启用”，有点繁琐，
+            故，此处直接修改打印button的onclick为通用的window.print()。
+        3、注意：翻阅了一下网页，其他按钮的type均为submit，只有此处的打印按钮的type为button，
+            故使用$(":button")定位所有 type="button" 的 <input> 元素，
+            后期所有其他情况出现，再用id或class的方法定位元素。
+    */
+    var $printer =  $(":button");
+    $printer.removeAttr("onclick");
+    $printer.attr("onclick","window.print();");
 })();
