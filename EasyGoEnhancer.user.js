@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.5
+// @version      2.5.2
 // @description  重整EasyGo首页待办事项的显示方式。
 // @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
@@ -191,7 +191,15 @@
             故使用$(":button")定位所有 type="button" 的 <input> 元素，
             后期所有其他情况出现，再用id或class的方法定位元素。
     */
-    var $printer =  $(":button");
-    $printer.removeAttr("onclick");
-    $printer.attr("onclick","window.print();");
+    var printer1 =  $("#Button1");
+    printer1.removeAttr("onclick");
+    printer1.attr("onclick","window.print();");
+
+    var printer1 =  $("#Button2");
+    printer1.removeAttr("onclick");
+    printer1.attr("onclick","window.print();");
+
+    var printer1 =  $("#Button3");
+    printer1.removeAttr("onclick");
+    printer1.attr("onclick","window.print();");
 })();
