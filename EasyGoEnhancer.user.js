@@ -180,9 +180,10 @@
     */
 })();
 
+/*
 (function() {
     'use strict';
-    /* 2017.06.01更新：
+    2017.06.01更新：
         1、修复：打印按钮功能。
         2、说明：原网页只支持IE下的ActiveX控件直接调用打印方法，诸如：document.all.WebBrowser.ExecWB(8, 1);
             而且一般情况下，需要添加EasyGo为信任站点，并设置“对未标记为可安全执行脚本的ActiveX控件初始化并执行脚本”为“启用”，有点繁琐，
@@ -190,7 +191,7 @@
         3、注意：翻阅了一下网页，其他按钮的type均为submit，只有此处的打印按钮的type为button，
             故使用$(":button")定位所有 type="button" 的 <input> 元素，
             后期所有其他情况出现，再用id或class的方法定位元素。
-    */
+    
     var printer1 =  $("#Button1");
     printer1.removeAttr("onclick");
     printer1.attr("onclick","window.print();");
@@ -203,3 +204,4 @@
     printer1.removeAttr("onclick");
     printer1.attr("onclick","window.print();");
 })();
+*/
