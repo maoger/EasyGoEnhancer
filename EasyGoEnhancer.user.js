@@ -16,7 +16,6 @@
     'use strict';
 
     // trick：修改网页的title为EasyMao
-    // oh~ no! 这个想法太坏了，我暂时隐藏掉吧
     //$("title").html("EasyMao");
 
     // 定义：“待办事项”所在子网页
