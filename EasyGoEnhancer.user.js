@@ -2,10 +2,11 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.5.4
+// @version      2.5.5
 // @description  重整EasyGo首页待办事项的显示方式。
 // @author       Maoger
 // @match        http://www.ascendacpa.com.cn/*
+// @match        http://10.131.0.7/*
 // @require      http://code.jquery.com/jquery-3.2.1.js
 // @updateURL    https://openuserjs.org/meta/maoger/EasyGoEnhancer.meta.js
 
@@ -19,7 +20,12 @@
     //$("title").html("EasyMao");
 
     // 定义：“待办事项”所在子网页
-    var DBSX_url = "http://www.ascendacpa.com.cn/MoreTask3.aspx";
+
+    var DBSX_url = "MoreTask3.aspx";
+    //if (window.location.href.indexOf("10.131.0.7") >=0)
+    //  {DBSX_url = "http://10.131.0.7/MoreTask3.aspx";}
+    //else
+    //  {DBSX_url = "http://www.ascendacpa.com.cn/MoreTask3.aspx";}
 
     // 定义一个数组：待办事项的类型
     var ToDoListName = ["业务项目","业务报告","人文财务","独立性","综合"];
