@@ -2,10 +2,10 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.6.1
+// @version      2.6.2
 // @description  重整EasyGo首页待办事项的显示方式。
 // @author       Maoger
-// @match        http://www.ascendacpa.com.cn/*
+// @match        http://*.ascendacpa.com.cn/*
 // @match        http://10.131.0.7/*
 // @require      http://code.jquery.com/jquery-3.2.1.js
 // @updateURL    https://openuserjs.org/meta/maoger/EasyGoEnhancer.meta.js
