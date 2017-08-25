@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.6.2
+// @version      2.6.3
 // @description  重整EasyGo首页待办事项的显示方式。
 // @author       Maoger
 // @match        http://*.ascendacpa.com.cn/*
@@ -127,6 +127,18 @@
 
     // 将“动态报备”的快捷标签插入到“待办事项”按钮后
     $FakeTags.append($DTBB);
+
+    // 新建：名为“申报工时”的快捷标签
+    var $SBGS = $('<a/>')
+        .attr("href","Module/Framework/Acpa/Manhour/report.aspx")
+        .css({
+        "margin-right": "30px",
+        "color":"#333",
+        })
+        .html("申报工时");
+
+    // 将“申报工时”的快捷标签插入到“动态报备”按钮后
+    $FakeTags.append($SBGS);
 
     // 定义：一个Number类型变量，用于设置进度条的width的百分比
     var m = 0;
