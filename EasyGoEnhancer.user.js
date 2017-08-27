@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.6.3
+// @version      2.7
 // @description  重整EasyGo首页待办事项的显示方式。
 // @author       Maoger
 // @match        http://*.ascendacpa.com.cn/*
@@ -19,12 +19,7 @@
     //$("title").html("EasyMao");
 
     // 定义：“待办事项”所在子网页
-
-    var DBSX_url = "MoreTask3.aspx";
-    //if (window.location.href.indexOf("10.131.0.7") >=0)
-    //  {DBSX_url = "http://10.131.0.7/MoreTask3.aspx";}
-    //else
-    //  {DBSX_url = "http://www.ascendacpa.com.cn/MoreTask3.aspx";}
+    var DBSX_url = "/MoreTask3.aspx";
 
     // 定义一个数组：待办事项的类型
     var ToDoListName = ["业务项目","业务报告","人文财务","独立性","综合"];
@@ -35,9 +30,8 @@
     // 新建：装载 待办事项 数据的容器
     var $DBSX_Container = $("<div/>");
 
-    /*
     // 定义：“工时管理”所在子网页
-    var GSGL_url = "http://www.ascendacpa.com.cn/Module/Framework/Acpa/Manhour/report.aspx";
+    var GSGL_url = "/Module/Framework/Acpa/Manhour/report.aspx";
 
     // 定位：首页中“生日提醒”滚动栏
     var $spanBirthdayName = $("#spanBirthdayName");
@@ -56,14 +50,14 @@
         .html("&nbsp;天。");
 
     var $GSGL_gs = $("<a/>")
-        .attr("href","http://www.ascendacpa.com.cn/Module/Framework/Acpa/Manhour/report.aspx")
+        .attr("href","/Module/Framework/Acpa/Manhour/report.aspx")
         .css({
             "font-weight":"bold",
             "color":"red"
         });
 
     var $GSGL_trip = $("<a/>")
-        .attr("href","http://www.ascendacpa.com.cn/Module/Framework/Acpa/Manhour/report.aspx")
+        .attr("href","/Module/Framework/Acpa/Manhour/report.aspx")
         .css({
             "font-weight":"bold",
             "color":"red"
@@ -76,7 +70,6 @@
     $GSGL_cc.insertAfter($GSGL_wb1);
     $GSGL_trip.insertAfter($GSGL_cc);
     $GSGL_wb2.insertAfter($GSGL_trip);
-    */
 
     // tampermonkey 在运行的时候，碰到页面有 frame 标签，会对其每一个运行脚本
     // 这里排除没有找到相关元素的 frame
@@ -118,7 +111,7 @@
 
     // 新建：名为“动态报备”的快捷标签
     var $DTBB = $('<a/>')
-        .attr("href","Module/Framework/Acpa/Project/UserScheduleDynamic.aspx")
+        .attr("href","/Module/Framework/Acpa/Project/UserScheduleDynamic.aspx")
         .css({
         "margin-right": "30px",
         "color":"#333",
@@ -130,7 +123,7 @@
 
     // 新建：名为“申报工时”的快捷标签
     var $SBGS = $('<a/>')
-        .attr("href","Module/Framework/Acpa/Manhour/report.aspx")
+        .attr("href","/Module/Framework/Acpa/Manhour/report.aspx")
         .css({
         "margin-right": "30px",
         "color":"#333",
@@ -187,12 +180,11 @@
         });
     }
 
-    /*
     // 加载：工时管理 之 ①当月已报工时、②当月出差天数
     var GSGL_gs = GSGL_url + " " + "#tabContent__0 div:eq(1) tr:last td:eq(1)";
     $GSGL_gs.load(GSGL_gs);
 
     var GSGL_trip = GSGL_url + " " + "#tabContent__0 div:eq(1) tr:last td:eq(2)";
     $GSGL_trip.load(GSGL_trip);
-    */
+
 })();
