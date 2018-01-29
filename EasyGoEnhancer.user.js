@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.8.180130.1
+// @version      2.8.180130.2
 // @description  更加效率的EasyGo.
 // @author       Maoger
 // @match        http://*.ascendacpa.com.cn/*
@@ -308,15 +308,18 @@ Download_Multi();
 function Download_Auto() {
     'use strict';
     /*
-    # V0.2
+    # V180129.1
     - 更新了match的url地址，更加精准定位
 
-    # V0.3
+    # V180129.2
     - 兼容下载多个附件
 
-    # V0.4
+    # V180129.3
     - 改为自动下载
     - 修改提示样式
+
+    # V180130.1
+    - 增加“jpg”格式下载
     */
 
     // 如果当前是询证函查询界面，加载下载按钮
@@ -347,7 +350,7 @@ function Download_Auto() {
         for( var i=0; i<hrefArr.length; i++ ){
             c = hrefArr[i].href;
 
-            if (c.indexOf("pdf")>=0){
+            if (c.indexOf("pdf")>=0 || c.indexOf("jpg")>=0){
                 url = c;
             }
         }
@@ -362,6 +365,7 @@ function Download_Auto() {
             for(i=0; i<hrefArr.length; i++ ){
                 c = hrefArr[i].href;
 
+                // 下载方式1：PDF格式
                 if (c.indexOf("pdf")>=0){
                     url = c;
 
@@ -372,6 +376,21 @@ function Download_Auto() {
                     }
                     else{
                         filename = LetterId + '_' + LetterName + '_' + j.toString() + '.pdf';
+                    }
+
+                    download(url,filename);
+                }
+                // 下载方式2：JPG格式
+                if (c.indexOf("jpg")>=0){
+                    url = c;
+
+                    j = j + 1;
+
+                    if(j == 1){
+                        filename = LetterId + '_' + LetterName + '.jpg';
+                    }
+                    else{
+                        filename = LetterId + '_' + LetterName + '_' + j.toString() + '.jpg';
                     }
 
                     download(url,filename);
