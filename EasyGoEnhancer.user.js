@@ -3,13 +3,15 @@
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
 // @version      2.8.180130
-// @description  奔着更加效率的目的，修改着EasyGo的UI或功能。
+// @description  更加效率的EasyGo.
 // @author       Maoger
 // @match        http://*.ascendacpa.com.cn/*
 // @match        http://10.131.0.7/*
 // @require      http://code.jquery.com/jquery-3.2.1.js
 // @updateURL    https://openuserjs.org/meta/maoger/EasyGoEnhancer.meta.js
 // @grant        GM_openInTab
+// @copyright    2016, maoger (https://openuserjs.org/users/maoger)
+// @license      MIT
 
 // ==/UserScript==
 
