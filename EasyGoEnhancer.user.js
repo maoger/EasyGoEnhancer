@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.8.180130
+// @version      2.8.180130.2
 // @description  更加效率的EasyGo.
 // @author       Maoger
 // @match        http://*.ascendacpa.com.cn/*
@@ -10,7 +10,7 @@
 // @require      http://code.jquery.com/jquery-3.2.1.js
 // @updateURL    https://openuserjs.org/meta/maoger/EasyGoEnhancer.meta.js
 // @grant        GM_openInTab
-// @copyright    2016, maoger (https://openuserjs.org/users/maoger)
+// @copyright    2016-2018, maoger (https://openuserjs.org/users/maoger)
 // @license      MIT
 
 // ==/UserScript==
