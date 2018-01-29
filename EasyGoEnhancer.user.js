@@ -2,8 +2,8 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.8.1
-// @description  重整EasyGo首页待办事项的显示方式。
+// @version      2.8.180130
+// @description  奔着更加效率的目的，修改着EasyGo的UI或功能。
 // @author       Maoger
 // @match        http://*.ascendacpa.com.cn/*
 // @match        http://10.131.0.7/*
