@@ -2,21 +2,23 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.7
+// @version      2.8.1
 // @description  重整EasyGo首页待办事项的显示方式。
 // @author       Maoger
 // @match        http://*.ascendacpa.com.cn/*
 // @match        http://10.131.0.7/*
 // @require      http://code.jquery.com/jquery-3.2.1.js
 // @updateURL    https://openuserjs.org/meta/maoger/EasyGoEnhancer.meta.js
+// @grant        GM_openInTab
 
 // ==/UserScript==
 
-(function() {
+// ============================= Start: Load_ToDoList ========================================
+function Load_ToDoList() {
     'use strict';
 
-    // trick：修改网页的title为EasyMao
-    //$("title").html("EasyMao");
+    // trick：修改网页的title
+    $("title").html("EasyGo | Maoger祝大家年审快乐 | 让EasyGo变得更加效率");
 
     // 定义：“待办事项”所在子网页
     var DBSX_url = "/MoreTask3.aspx";
@@ -34,7 +36,7 @@
     var GSGL_url = "/Module/Framework/Acpa/Manhour/report.aspx";
 
     // 定位：首页中“生日提醒”滚动栏
-    var $spanBirthdayName = $("#spanBirthdayName");
+    // var $spanBirthdayName = $("#spanBirthdayName");
 
     // 新建：装载 工时管理 数据的容器
     var $GSGL_Container = $("<span/>")
@@ -121,7 +123,7 @@
     // 将“动态报备”的快捷标签插入到“待办事项”按钮后
     $FakeTags.append($DTBB);
 
-    // 新建：名为“申报工时”的快捷标签
+    // 新建：名为“申报工时”的快捷标签，并插入页面中
     var $SBGS = $('<a/>')
         .attr("href","/Module/Framework/Acpa/Manhour/report.aspx")
         .css({
@@ -129,9 +131,17 @@
         "color":"#333",
         })
         .html("申报工时");
-
-    // 将“申报工时”的快捷标签插入到“动态报备”按钮后
     $FakeTags.append($SBGS);
+
+    // 新建：名为“项目园地”的快捷标签，并插入页面中
+    var $XMYD = $('<a/>')
+        .attr("href","/Module/Framework/Acpa/ClientInfo/ProFieldNav.aspx")
+        .css({
+        "margin-right": "30px",
+        "color":"#333",
+        })
+        .html("项目园地");
+    $FakeTags.append($XMYD);
 
     // 定义：一个Number类型变量，用于设置进度条的width的百分比
     var m = 0;
@@ -186,5 +196,187 @@
 
     var GSGL_trip = GSGL_url + " " + "#tabContent__0 div:eq(1) tr:last td:eq(2)";
     $GSGL_trip.load(GSGL_trip);
+}
+Load_ToDoList();
+// ============================= End: Load_ToDoList ========================================
 
-})();
+
+// ========================= Start:下载并重命名的一整套方法 ===================================
+/*
+获取 blob
+    @param  {String} url 目标文件地址
+    @return {Promise}
+ */
+function getBlob(url) {
+    return new Promise(resolve => {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('GET', url, true);
+        xhr.responseType = 'blob';
+        xhr.onload = () => {
+            if (xhr.status === 200) {
+                resolve(xhr.response);
+            }
+        };
+
+        xhr.send();
+    });
+}
+
+/*
+保存
+    @param  {Blob} blob
+    @param  {String} filename 想要保存的文件名称
+ */
+function saveAs(blob, filename) {
+    if (window.navigator.msSaveOrOpenBlob) {
+        navigator.msSaveBlob(blob, filename);
+    } else {
+        const link = document.createElement('a');
+        const body = document.querySelector('body');
+
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+
+        // fix Firefox
+        link.style.display = 'none';
+        body.appendChild(link);
+        link.click();
+        body.removeChild(link);
+
+        window.URL.revokeObjectURL(link.href);
+    }
+}
+
+/*
+下载
+    @param  {String} url 目标文件地址
+    @param  {String} filename 想要保存的文件名称
+ */
+function download(url, filename) {
+    getBlob(url).then(blob => {
+        saveAs(blob, filename);
+    });
+}
+// ========================= End:下载并重命名的一整套方法 ===================================
+
+
+// ========================= Star:批量下载按钮 ===================================
+// 批量下载
+function Download_Multi() {
+    'use strict';
+
+    // 如果当前是询证函界面，加载一键下载按钮
+    if(window.location.href.indexOf('/Confirmation.aspx?No=')>0){
+        // 新建：“下载”按钮
+        var $DingWei_Multi = $("#ctl00_PageBody_lblFullName");
+        var $MaoDownloader_Multi = $("<button/>")
+            .attr('type','button')
+            .html("<span style='font-family:Calibri; font-size: 14px; color: #9932CD'>一键打开 \>\>以下全部询证函</span>");
+        $MaoDownloader_Multi.insertAfter($DingWei_Multi);
+
+        // 新建：提醒
+        var $DingWei_Title = $(".menubar_title");
+        var $MaoReminder_Multi = $("<td/>")
+            .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #EEA9B8'>&nbsp;&nbsp;&nbsp;&nbsp;提示：点击以下的【查询】按钮，查看更多选项；比如：可以按照 “回函扫描创建日期” or “回函收件人” or “被询证方” 等筛选回函结果……</span>");
+        $MaoReminder_Multi.insertAfter($DingWei_Title);
+
+        $MaoDownloader_Multi.click(function(){
+            // 打开所有链接
+            var url = '';
+            var c ='';
+            var hrefArr = document.getElementsByTagName('a');
+            var n = hrefArr.length;
+            for( var i=0; i<hrefArr.length; i++ ){
+                c = hrefArr[i].href;
+
+                if (c.indexOf("ID")>=0){
+                    window.open(c);
+                }
+            }
+        });
+    }
+
+}
+Download_Multi();
+// ========================= End:批量下载按钮 ===================================
+
+
+// ========================= Star:自动下载与提示 ===================================
+function Download_Auto() {
+    'use strict';
+    /*
+    # V0.2
+    - 更新了match的url地址，更加精准定位
+
+    # V0.3
+    - 兼容下载多个附件
+
+    # V0.4
+    - 改为自动下载
+    - 修改提示样式
+    */
+
+    // 如果当前是询证函查询界面，加载下载按钮
+    if(window.location.href.indexOf('/ConfirmationEdit.aspx?ID=')>0){
+        // 重命名取数
+        var LetterId = document.getElementById('ctl00_PageBody_lblConfID').innerHTML;
+        var LetterName = document.getElementById('ctl00_PageBody_txtConfirmationName').value;
+        var filename = '';
+
+        // 定位
+        var $DingWei_PerID = $("#ctl00_PageBody_lblConfID");
+
+        // 新建提示1：已回函，开始静默下载
+        var $MaoReminder_PerID = $("<span/>")
+            .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #CDCDCD'>&nbsp;&nbsp;&nbsp;&nbsp;已开始静默下载，稍等片刻……</span>");
+
+
+        // 新建提示2：没有回函扫描件
+        var $MaoNothing_PerID = $("<span/>")
+            .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #EEA9B8'>&nbsp;&nbsp;&nbsp;&nbsp;暂未回函！如果已发函很长时间了，请尽快催函，或加强催函力度……</span>");
+
+        // 查找：下载链接，判断是不是要增加“下载”按钮
+        var url = '';
+        var c ='';
+        var hrefArr = document.getElementsByTagName('a');
+
+
+        for( var i=0; i<hrefArr.length; i++ ){
+            c = hrefArr[i].href;
+
+            if (c.indexOf("pdf")>=0){
+                url = c;
+            }
+        }
+
+        if (url ==''){
+            $MaoNothing_PerID.insertAfter($DingWei_PerID );
+        }
+        else{
+            // 如果已回函（url非空），则开始自动下载
+            $MaoReminder_PerID.insertAfter($DingWei_PerID );
+            var j = 0;
+            for(i=0; i<hrefArr.length; i++ ){
+                c = hrefArr[i].href;
+
+                if (c.indexOf("pdf")>=0){
+                    url = c;
+
+                    j = j + 1;
+
+                    if(j == 1){
+                        filename = LetterId + '_' + LetterName + '.pdf';
+                    }
+                    else{
+                        filename = LetterId + '_' + LetterName + '_' + j.toString() + '.pdf';
+                    }
+
+                    download(url,filename);
+                }
+            }
+        }
+    }
+}
+Download_Auto();
+// ========================= End:自动下载与提示 ===================================
