@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.8.180130.2
+// @version      2.8.180130.3
 // @description  更加效率的EasyGo.
 // @author       Maoger
 // @match        http://*.ascendacpa.com.cn/*
@@ -280,7 +280,7 @@ function Download_Multi() {
         // 新建：提醒
         var $DingWei_Title = $(".menubar_title");
         var $MaoReminder_Multi = $("<td/>")
-            .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #EEA9B8'>&nbsp;&nbsp;&nbsp;&nbsp;提示：点击以下的【查询】按钮，查看更多选项；比如：可以按照 “回函扫描创建日期” or “回函收件人” or “被询证方” 等筛选回函结果……</span>");
+            .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #EEA9B8'>&nbsp;&nbsp;&nbsp;&nbsp;提示：点击以下的【查询】按钮，查看更多选项；比如：可以按照 “回函扫描创建日期” 、 “回函收件人” 、 “被询证方” 等，先筛选回函结果，再下载……</span>");
         $MaoReminder_Multi.insertAfter($DingWei_Title);
 
         $MaoDownloader_Multi.click(function(){
