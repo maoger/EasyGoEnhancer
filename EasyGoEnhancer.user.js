@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.8.180130.4
+// @version      2.8.180130.5
 // @description  更加效率的EasyGo.
 // @author       Maoger
 // @match        http://*.ascendacpa.com.cn/*
@@ -20,7 +20,7 @@ function Load_ToDoList() {
     'use strict';
 
     // trick：修改网页的title
-    $("title").html("EasyGo | Maoger祝大家年审快乐 | 让EasyGo变得更加效率");
+    $("title").html("EasyGo | Maoger | 祝大家年审快乐");
 
     // 定义：“待办事项”所在子网页
     var DBSX_url = "/MoreTask3.aspx";
