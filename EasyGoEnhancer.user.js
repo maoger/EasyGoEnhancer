@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.8.180130.5
+// @version      2.8.180130.6
 // @description  更加效率的EasyGo.
 // @author       Maoger
 // @match        http://*.ascendacpa.com.cn/*
@@ -278,9 +278,9 @@ function Download_Multi() {
         $MaoDownloader_Multi.insertAfter($DingWei_Multi);
 
         // 新建：提醒
-        var $DingWei_Title = $(".menubar_title");
+        var $DingWei_Title = $("#ctl00_PageBody_AspNetPager1");
         var $MaoReminder_Multi = $("<td/>")
-            .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #EEA9B8'>&nbsp;&nbsp;&nbsp;&nbsp;提示：点击以下的【查询】按钮，查看更多选项；比如：可以按照 “回函扫描创建日期” 、 “回函收件人” 等，先筛选回函结果，再下载……</span>");
+            .html("<br/><strong>Notes:</strong><br/><span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>1、提示<br/>点击上述【查询】按钮，查看更多选项；比如：可以按照 “回函扫描创建日期” 、 “回函收件人” 等，先筛选回函结果，再下载……<br/>2、建议<br/>先将浏览器设置为静默下载（取消“每次下载前提示保存位置”）。<br/>3、功能<br/>（1）可以逐个点击下载；<br/>（2）也可以一次性批量下载多封。<br/>4、受限于网速，反应可能会比较慢……请耐心等待全部下载完成后，再关闭后续的子页面。</span>");
         $MaoReminder_Multi.insertAfter($DingWei_Title);
 
         $MaoDownloader_Multi.click(function(){
