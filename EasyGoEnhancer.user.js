@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.8.180130.6
+// @version      2.8.180131.1
 // @description  更加效率的EasyGo.
 // @author       Maoger
 // @match        http://*.ascendacpa.com.cn/*
@@ -274,7 +274,7 @@ function Download_Multi() {
         var $DingWei_Multi = $("#ctl00_PageBody_lblFullName");
         var $MaoDownloader_Multi = $("<button/>")
             .attr('type','button')
-            .html("<span style='font-family:Calibri; font-size: 14px; color: #9932CD'>一键打开 \>\>以下全部询证函</span>");
+            .html("<span style='font-family:Calibri; font-size: 14px; color: #9932CD'>一键下载 \>\>以下全部询证函</span>");
         $MaoDownloader_Multi.insertAfter($DingWei_Multi);
 
         // 新建：提醒
