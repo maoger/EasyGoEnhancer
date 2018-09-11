@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.9.180911
+// @version      2.9.18091102
 // @description  更加效率的EasyGo.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
