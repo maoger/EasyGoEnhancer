@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      2.8.18050601
+// @version      2.9.180911
 // @description  更加效率的EasyGo.
 // @author       Maoger
 // @match        http://*.ascendacpa.com.cn/*
@@ -20,7 +20,7 @@ function Load_ToDoList() {
     'use strict';
 
     // trick：修改网页的title
-    $("title").html("EasyGo | Maoger | 年审结束了 该收收心 准备好好休息了");
+    $("title").html("EasyGo | Maoger");
 
     // 定义：“待办事项”所在子网页
     var DBSX_url = "/MoreTask3.aspx";
@@ -203,7 +203,7 @@ Load_ToDoList();
 // ============================= End: Load_ToDoList ========================================
 
 
-// ========================= Start:下载并重命名的一整套方法 ===================================
+// Start:下载并重命名的一整套方法 ===================================
 /*
 获取 blob
     @param  {String} url 目标文件地址
@@ -260,10 +260,10 @@ function download(url, filename) {
         saveAs(blob, filename);
     });
 }
-// ========================= End:下载并重命名的一整套方法 ===================================
+// End:下载并重命名的一整套方法 ===================================
 
 
-// ========================= Star:批量下载按钮 ===================================
+// Star:批量下载按钮 ===================================
 // 批量下载
 function Download_Multi() {
     'use strict';
@@ -301,28 +301,13 @@ function Download_Multi() {
 
 }
 Download_Multi();
-// ========================= End:批量下载按钮 ===================================
+// End:批量下载按钮 ===================================
 
 
-// ========================= Star:自动下载与提示 ===================================
+// Star:自动下载与提示 ===================================
 function Download_Auto() {
     'use strict';
-    /*
-    # V180129.1
-    - 更新了match的url地址，更加精准定位
-
-    # V180129.2
-    - 兼容下载多个附件
-
-    # V180129.3
-    - 改为自动下载
-    - 修改提示样式
-
-    # V180130.1
-    - 增加“jpg”格式下载
-    */
-
-    // 如果当前是询证函查询界面，加载下载按钮
+    // 判断当前是否为询证函查询界面
     if(window.location.href.indexOf('/ConfirmationEdit.aspx?ID=')>0){
         // 重命名取数
         var LetterId = document.getElementById('ctl00_PageBody_lblConfID').innerHTML;
@@ -346,12 +331,17 @@ function Download_Auto() {
         var c ='';
         var hrefArr = document.getElementsByTagName('a');
 
+        var file_split = [];
+        var file_type = '';
+        var file_type_arr = ['pdf','PDF','jpg','JPG'];
 
         for( var i=0; i<hrefArr.length; i++ ){
             c = hrefArr[i].href;
-
-            if (c.indexOf("pdf")>=0 || c.indexOf("jpg")>=0){
+            file_split = c.split(".");
+            file_type = file_split[file_split.length - 1];
+            if (file_type_arr.includes(file_type)){
                 url = c;
+                break;
             }
         }
 
@@ -364,40 +354,23 @@ function Download_Auto() {
             var j = 0;
             for(i=0; i<hrefArr.length; i++ ){
                 c = hrefArr[i].href;
-
-                // 下载方式1：PDF格式
-                if (c.indexOf("pdf")>=0){
+                file_split = c.split(".");
+                file_type = file_split[file_split.length - 1];
+                // 下载
+                if (file_type_arr.includes(file_type)){
                     url = c;
-
                     j = j + 1;
-
                     if(j == 1){
-                        filename = LetterId + '_' + LetterName + '.pdf';
+                        filename = LetterId + '_' + LetterName + '.' + file_type;
                     }
                     else{
-                        filename = LetterId + '_' + LetterName + '_' + j.toString() + '.pdf';
+                        filename = LetterId + '_' + LetterName + '_' + j.toString() + '.' + file_type;
                     }
-
-                    download(url,filename);
-                }
-                // 下载方式2：JPG格式
-                if (c.indexOf("jpg")>=0){
-                    url = c;
-
-                    j = j + 1;
-
-                    if(j == 1){
-                        filename = LetterId + '_' + LetterName + '.jpg';
-                    }
-                    else{
-                        filename = LetterId + '_' + LetterName + '_' + j.toString() + '.jpg';
-                    }
-
-                    download(url,filename);
+                download(url,filename);
                 }
             }
         }
     }
 }
 Download_Auto();
-// ========================= End:自动下载与提示 ===================================
+// End:自动下载与提示 ===================================s
