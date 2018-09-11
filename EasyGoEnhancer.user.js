@@ -5,8 +5,8 @@
 // @version      2.9.180911
 // @description  更加效率的EasyGo.
 // @author       Maoger
-// @match        http://*.ascendacpa.com.cn/*
-// @match        http://10.131.0.7/*
+// @match        http*://*.ascendacpa.com.cn/*
+// @match        http*://10.131.0.7/*
 // @require      http://code.jquery.com/jquery-3.2.1.js
 // @updateURL    https://openuserjs.org/meta/maoger/EasyGoEnhancer.meta.js
 // @grant        GM_openInTab
