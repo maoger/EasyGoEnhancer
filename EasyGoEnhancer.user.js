@@ -10,7 +10,7 @@
 // @require      http://code.jquery.com/jquery-3.2.1.js
 // @updateURL    https://openuserjs.org/meta/maoger/EasyGoEnhancer.meta.js
 // @grant        GM_openInTab
-// @copyright    2016-2019, maoger (https://openuserjs.org/users/maoger)
+// @copyright    2016, maoger (https://openuserjs.org/users/maoger)
 // @license      MIT
 
 // ==/UserScript==
