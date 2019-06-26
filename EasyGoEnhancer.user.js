@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         EasyGoEnhancer
-// @namespace    http://tampermonkey.net/
+// @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.1
-// @description  更加效率的EasyGo.
+// @version      3.2
+// @description  Make EasyGo to be easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
 // @match        http*://10.131.0.7/*
