@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.3.20190805
+// @version      3.4.20190805
 // @description  Make EasyGo to be easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
@@ -163,6 +163,9 @@ function load_toDoList() {
                         m = m + 0.1;
                         bar.css("width",m.toString() + "%");
                     }
+                    else{
+                        pass
+                    }
                     if ( m >= 100 ) {
                         clearInterval(loadingRate);
                         setTimeout(function(){
@@ -192,18 +195,10 @@ function load_working_hours(){
     var GSGL_url = "/Module/Framework/Acpa/Manhour/report.aspx";
 
     // 新建：装载 工时管理 数据的容器
-    var GSGL_container = $("<span/>")
-        .html("本月已工作：");
-
-    var GSGL_wb1 = $("<td/>")
-        .html("&nbsp;个小时，");
-
-    var GSGL_cc = $("<td/>")
-        .html("本月已出差：");
-
-    var GSGL_wb2 = $("<td/>")
-        .html("&nbsp;天。");
-
+    var GSGL_container = $("<span/>").html("本月已工作：");
+    var GSGL_wb1 = $("<td/>").html("&nbsp;个小时，");
+    var GSGL_cc = $("<td/>").html("本月已出差：");
+    var GSGL_wb2 = $("<td/>").html("&nbsp;天。");
     var GSGL_gs = $("<a/>")
         .attr("href","/Module/Framework/Acpa/Manhour/report.aspx")
         .css({
@@ -315,10 +310,8 @@ function download_multi(){
 
     mao_downloader_multi.click(function(){
         // 打开所有链接
-        var url = '';
         var c ='';
         var hrefArr = document.getElementsByTagName('a');
-        var n = hrefArr.length;
         for( var i=0; i<hrefArr.length; i++ ){
             c = hrefArr[i].href;
 
@@ -391,6 +384,15 @@ function download_auto() {
             download(url,filename);
             }
         }
+        // 下载完，1分钟后关闭当前页面
+        setTimeout(close_tab,60000);
     }
 }
+
+function close_tab(){
+    window.opener=null;
+    window.open('','_self');
+    window.close();
+}
+
 // ============================= End: 下载询证函 ========================================
