@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.4.20190805
+// @version      3.5.20190805
 // @description  Make EasyGo to be easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
@@ -38,7 +38,7 @@ window.onload = function(){
         download_auto();
     }
     else{
-        pass
+        console.log('欢迎使用EasyGoEnhancer,详情请见：http://www.maoyanqing.com/download/easygoenhancer.html')
     }
 }
 
@@ -164,7 +164,7 @@ function load_toDoList() {
                         bar.css("width",m.toString() + "%");
                     }
                     else{
-                        pass
+                        console.log('欢迎使用EasyGoEnhancer,详情请见：http://www.maoyanqing.com/download/easygoenhancer.html')
                     }
                     if ( m >= 100 ) {
                         clearInterval(loadingRate);
