@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.5.20190805
+// @version      3.6
 // @description  Make EasyGo to be easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
@@ -14,17 +14,21 @@
 // @license      MIT
 
 // ==/UserScript==
+
 window.onload = function(){
     $("title").html("EasyGo | Maoger");
-    if($(".NewTitle1").length > 0){
+    if ($(".NewTitle1").length > 0){
         load_working_hours();
         load_toDoList();
     }
-        else if(window.location.href.indexOf('/Confirmation.aspx?No=') > 0){
+    else if (window.location.href.indexOf('/Confirmation.aspx') >= 0){
         download_multi();
     }
-        else if(window.location.href.indexOf('/ConfirmationEdit.aspx?ID=') > 0 ){
+    else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0 ){
         download_auto();
+    }
+    else if (window.location.href.indexOf('/IndependenceInfo.aspx') >= 0 ){
+        fix_printer();
     }
     else{
         console.log('欢迎使用EasyGoEnhancer,详情请见：http://www.maoyanqing.com/download/easygoenhancer.html')
@@ -55,7 +59,8 @@ function load_toDoList() {
             "width" : "0%",
             "border-radius" : "1px",
             "display" : "block",
-            "box-shadow" : "0px 0px 10px 1px #CC66FF",            "background-color" : "#fff"
+            "box-shadow" : "0px 0px 10px 1px #CC66FF",
+            "background-color" : "#fff"
         });
     load_container.append(bar);
     var DTBB = $('<a/>')
@@ -82,41 +87,41 @@ function load_toDoList() {
         })
         .html("项目园地<span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>「询证函下载入口」</span>");
     fake_tags.append(XMYD);
-        var m = 0;
-        for (var i = 0, max = toDoList_names.length; i < max; i++) {
-            var name = toDoList_names[i];
-            var elt = $("<table/>")
-                .attr("data-name", name)
-                .addClass("tablebox")
-                .css({
-                    "text-align": "left"
-                })
-                .html("<span>正在加载<b>" + name + "</b>中，请稍候...</span>");
-            DBSX_container.append(elt);
-            var PerUrl = DBSX_url + "?ind=" + (i+1).toString() + " " + "#tabContent__" + i.toString() + " " + "div:first tr:gt(0)";
-            elt.load(PerUrl, function(responseTxt , statusTxt , xhr) {
-                if (statusTxt === "success") {
-                    var loadingRate = self.setInterval(function (){
-                        if ( m < (i-1)*20 ) {
-                            m = (i-1)*20;
-                            bar.css("width",m.toString() + "%");
-                        }
-                        else if( m < i*20 ){
-                            m = m + 0.1;
-                            bar.css("width",m.toString() + "%");
-                        }
-                        else{
-                            console.log('欢迎使用EasyGoEnhancer,详情请见：http://www.maoyanqing.com/download/easygoenhancer.html')
-                        }
-                        if ( m >= 100 ) {
-                            clearInterval(loadingRate);
-                            setTimeout(function(){
-                                load_container.css("margin","0px");
-                                bar.css({"width" : "0%","height":"0px"});
-                            },600);
-                        }
-                    },10);
-                }
+    var m = 0;
+    for (var i = 0; i<toDoList_names.length; i++) {
+        var name = toDoList_names[i];
+        var elt = $("<table/>")
+        .attr("data-name", name)
+        .addClass("tablebox")
+        .css({
+            "text-align": "left"
+        })
+        .html("<span>正在加载<b>" + name + "</b>中，请稍候...</span>");
+        DBSX_container.append(elt);
+        var PerUrl = DBSX_url + "?ind=" + (i+1).toString() + " " + "#tabContent__" + i.toString() + " " + "div:first tr:gt(0)";
+        elt.load(PerUrl, function(responseTxt , statusTxt , xhr) {
+            if (statusTxt === "success") {
+                var loadingRate = self.setInterval(function (){
+                    if ( m < (i-1)*20 ) {
+                        m = (i-1)*20;
+                        bar.css("width",m.toString() + "%");
+                    }
+                    else if ( m < i*20 ){
+                        m = m + 0.1;
+                        bar.css("width",m.toString() + "%");
+                    }
+                    else{
+                        console.log('欢迎使用EasyGoEnhancer,详情请见：http://www.maoyanqing.com/download/easygoenhancer.html')
+                    }
+                    if ( m >= 100 ) {
+                        clearInterval(loadingRate);
+                        setTimeout(function(){
+                            load_container.css("margin","0px");
+                            bar.css({"width" : "0%","height":"0px"});
+                        },600);
+                    }
+                },10);
+            }
             if (statusTxt === "error") {
                 $(this).html('<span style="color: red;">加载<b>' + $(this).attr("data-name") + '</b>失败！</span>');
             }
@@ -182,11 +187,6 @@ function saveAs(blob, filename) {
         window.URL.revokeObjectURL(link.href);
     }
 }
-/*
-download
-    @param  {String} url 目标文件地址
-    @param  {String} filename 想要保存的文件名称
-*/
 function download(url, filename) {
     getBlob(url).then(blob => {
         saveAs(blob, filename);
@@ -194,19 +194,19 @@ function download(url, filename) {
 }
 function download_multi(){
     'use strict';
-        var dingWei_multi = $("#ctl00_PageBody_lblFullName");
+    var dingWei_multi = $("#ctl00_PageBody_lblFullName");
     var mao_downloader_multi = $("<button/>")
         .attr('type','button')
         .html("<span style='font-family:Calibri; font-size: 14px; color: #9932CD'>一键下载 \>\>以下全部询证函</span>");
     mao_downloader_multi.insertAfter(dingWei_multi);
-        var dingWei_title = $("#ctl00_PageBody_AspNetPager1");
+    var dingWei_title = $("#ctl00_PageBody_AspNetPager1");
     var mao_reminder_multi = $("<td/>")
         .html("<br/><hr/><strong>Notes:</strong><br/><span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>1、提示<br/>点击上述【查询】按钮，查看更多选项；比如：可以按照 “回函扫描创建日期” 、 “回函收件人” 等，先筛选回函结果，再下载……<br/><br/>2、建议<br/>①将浏览器设置为静默下载（取消“每次下载前提示保存位置”）；<br/>②设置浏览器为“始终允许此网站的弹出式窗口”。<br/><br/>3、受限于网速，反应可能会比较慢……请耐心等待全部下载完成后，再关闭后续的子页面。<br/><br/>4、更多信息，详见：<a target='_blank' href='http://www.maoyanqing.com/download/easygoenhancer.html' style='font-family: Calibri; font-size: 12px; color: #0000cc;'>EasyGoEnhancer官网</a></span>");
     mao_reminder_multi.insertAfter(dingWei_title);
     mao_downloader_multi.click(function(){
         var c ='';
         var hrefArr = document.getElementsByTagName('a');
-        for( var i=0; i<hrefArr.length; i++ ){
+        for ( var i=0; i<hrefArr.length; i++ ){
             c = hrefArr[i].href;
             if (c.indexOf("ID")>=0){
                 window.open(c);
@@ -230,7 +230,7 @@ function download_auto() {
     var file_split = [];
     var file_type = '';
     var file_type_arr = ['pdf','PDF','jpg','JPG'];
-    for( var i=0; i<hrefArr.length; i++ ){
+    for ( var i=0; i<hrefArr.length; i++ ){
         c = hrefArr[i].href;
         file_split = c.split(".");
         file_type = file_split[file_split.length - 1];
@@ -245,14 +245,14 @@ function download_auto() {
     else{
         mao_reminder_perID.insertAfter(dingWei_perID );
         var j = 0;
-        for(i=0; i<hrefArr.length; i++ ){
+        for (i=0; i<hrefArr.length; i++ ){
             c = hrefArr[i].href;
             file_split = c.split(".");
             file_type = file_split[file_split.length - 1];
             if (file_type_arr.includes(file_type)){
                 url = c;
                 j = j + 1;
-                if(j == 1){
+                if (j == 1){
                     filename = letter_id + '_' + letter_name + '.' + file_type;
                 }
                 else{
@@ -268,4 +268,22 @@ function close_tab(){
     window.opener=null;
     window.open('','_self');
     window.close();
+}
+function fix_printer(){
+    'use strict';
+    var btn =  $("#Button1");
+    if (btn.val().indexOf("打印") >= 0){
+        btn.removeAttr("onclick");
+        btn.attr("onclick","window.print();");
+    }
+    btn =  $("#Button2");
+    if (btn.val().indexOf("打印") >= 0){
+        btn.removeAttr("onclick");
+        btn.attr("onclick","window.print();");
+    }
+    btn =  $("#Button3");
+    if (btn.val().indexOf("打印") >= 0){
+        btn.removeAttr("onclick");
+        btn.attr("onclick","window.print();");
+    }
 }

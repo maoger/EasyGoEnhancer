@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.5.20190805
+// @version      3.6
 // @description  Make EasyGo to be easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
@@ -15,27 +15,32 @@
 
 // ==/UserScript==
 
-// 删除 注释 /* */：/\*{1,2}[\s\S]*?\*/
-// 删除 注释 //：//[\s\S]*?\n
-// 删除 xml注释：<!-[\s\S]*?-->
+// 删除 注释 //：^\s*//[\s\S]*?\n
+// 删除 注释 /* */：^\s*/\*[\s\S]*?\n\*/\n
 // 删除 空白行：^\s*\n
+// 删除 xml注释：^\s*<!-[\s\S]*?-->
 
 
-// 判断：若为首页，执行指定JS
+
 window.onload = function(){
     $("title").html("EasyGo | Maoger");
 
-    if($(".NewTitle1").length > 0){
+    // 判断：若为首页，执行指定JS
+    if ($(".NewTitle1").length > 0){
         load_working_hours();
         load_toDoList();
     }
     // 判断：若为询证函下载主页，添加 批量下载按钮
-    else if(window.location.href.indexOf('/Confirmation.aspx?No=') > 0){
+    else if (window.location.href.indexOf('/Confirmation.aspx') >= 0){
         download_multi();
     }
     // 判断：若为每张询证函界面，自动下载
-    else if(window.location.href.indexOf('/ConfirmationEdit.aspx?ID=') > 0 ){
+    else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0 ){
         download_auto();
+    }
+    // 判断：修复打印按钮
+    else if (window.location.href.indexOf('/IndependenceInfo.aspx') >= 0 ){
+        fix_printer();
     }
     else{
         console.log('欢迎使用EasyGoEnhancer,详情请见：http://www.maoyanqing.com/download/easygoenhancer.html')
@@ -135,7 +140,7 @@ function load_toDoList() {
     var m = 0;
 
     // 加载：从服务器上逐项获取并加载“待办事项”数据
-    for (var i = 0, max = toDoList_names.length; i < max; i++) {
+    for (var i = 0; i<toDoList_names.length; i++) {
         var name = toDoList_names[i];
 
         // 构建包裹元素
@@ -159,7 +164,7 @@ function load_toDoList() {
                         m = (i-1)*20;
                         bar.css("width",m.toString() + "%");
                     }
-                    else if( m < i*20 ){
+                    else if ( m < i*20 ){
                         m = m + 0.1;
                         bar.css("width",m.toString() + "%");
                     }
@@ -312,7 +317,7 @@ function download_multi(){
         // 打开所有链接
         var c ='';
         var hrefArr = document.getElementsByTagName('a');
-        for( var i=0; i<hrefArr.length; i++ ){
+        for ( var i=0; i<hrefArr.length; i++ ){
             c = hrefArr[i].href;
 
             if (c.indexOf("ID")>=0){
@@ -350,7 +355,7 @@ function download_auto() {
     var file_type = '';
     var file_type_arr = ['pdf','PDF','jpg','JPG'];
 
-    for( var i=0; i<hrefArr.length; i++ ){
+    for ( var i=0; i<hrefArr.length; i++ ){
         c = hrefArr[i].href;
         file_split = c.split(".");
         file_type = file_split[file_split.length - 1];
@@ -367,7 +372,7 @@ function download_auto() {
         // 如果已回函（url非空），则开始自动下载
         mao_reminder_perID.insertAfter(dingWei_perID );
         var j = 0;
-        for(i=0; i<hrefArr.length; i++ ){
+        for (i=0; i<hrefArr.length; i++ ){
             c = hrefArr[i].href;
             file_split = c.split(".");
             file_type = file_split[file_split.length - 1];
@@ -375,7 +380,7 @@ function download_auto() {
             if (file_type_arr.includes(file_type)){
                 url = c;
                 j = j + 1;
-                if(j == 1){
+                if (j == 1){
                     filename = letter_id + '_' + letter_name + '.' + file_type;
                 }
                 else{
@@ -396,3 +401,27 @@ function close_tab(){
 }
 
 // ============================= End: 下载询证函 ========================================
+
+// ============================= Start: 修改打印按钮 ========================================
+function fix_printer(){
+    'use strict';
+
+    var btn =  $("#Button1");
+    if (btn.val().indexOf("打印") >= 0){
+        btn.removeAttr("onclick");
+        btn.attr("onclick","window.print();");
+    }
+
+    btn =  $("#Button2");
+    if (btn.val().indexOf("打印") >= 0){
+        btn.removeAttr("onclick");
+        btn.attr("onclick","window.print();");
+    }
+
+    btn =  $("#Button3");
+    if (btn.val().indexOf("打印") >= 0){
+        btn.removeAttr("onclick");
+        btn.attr("onclick","window.print();");
+    }
+}
+// ============================= End: 修改打印按钮 ========================================
