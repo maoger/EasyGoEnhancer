@@ -20,32 +20,28 @@
 // 删除 空白行：^\s*\n
 // 删除 xml注释：^\s*<!-[\s\S]*?-->
 
+$("title").html("EasyGo | Maoger");
 
-
-window.onload = function(){
-    $("title").html("EasyGo | Maoger");
-
-    // 判断：若为首页，执行指定JS
-    if ($(".NewTitle1").length > 0){
-        load_working_hours();
-        load_toDoList();
-    }
-    // 判断：若为询证函下载主页，添加 批量下载按钮
-    else if (window.location.href.indexOf('/Confirmation.aspx') >= 0){
-        download_multi();
-    }
-    // 判断：若为每张询证函界面，自动下载
-    else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0 ){
-        download_auto();
-    }
-    // 判断：修复打印按钮
-    else if (window.location.href.indexOf('/Acpa/') >= 0 ){
-        fix_printer();
-    }
-    else{
-        console.log('欢迎使用EasyGoEnhancer,详情请见：http://www.maoyanqing.com/download/easygoenhancer.html')
-    }
+// 判断：若为首页，执行指定JS
+if ($(".NewTitle1").length > 0){
+    load_working_hours();
+    load_toDoList();
 }
+// 判断：若为询证函下载主页，添加 批量下载按钮
+else if (window.location.href.indexOf('/Confirmation.aspx') >= 0){
+    download_multi();
+}
+// 判断：若为每张询证函界面，自动下载
+else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0 ){
+    download_auto();
+}
+// 判断：修复打印按钮
+else if (window.location.href.indexOf('/Acpa/') >= 0 ){
+    fix_printer();
+}
+else{
+    console.log('欢迎使用EasyGoEnhancer,详情请见：http://www.maoyanqing.com/download/easygoenhancer.html')
+};
 
 // ============================= Start: Load_ToDoList ========================================
 function load_toDoList() {

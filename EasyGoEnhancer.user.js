@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.7
+// @version      3.8
 // @description  Make EasyGo to be easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
@@ -15,25 +15,23 @@
 
 // ==/UserScript==
 
-window.onload = function(){
-    $("title").html("EasyGo | Maoger");
-    if ($(".NewTitle1").length > 0){
-        load_working_hours();
-        load_toDoList();
-    }
-    else if (window.location.href.indexOf('/Confirmation.aspx') >= 0){
-        download_multi();
-    }
-    else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0 ){
-        download_auto();
-    }
-    else if (window.location.href.indexOf('/Acpa/') >= 0 ){
-        fix_printer();
-    }
-    else{
-        console.log('欢迎使用EasyGoEnhancer,详情请见：http://www.maoyanqing.com/download/easygoenhancer.html')
-    }
+$("title").html("EasyGo | Maoger");
+if ($(".NewTitle1").length > 0){
+    load_working_hours();
+    load_toDoList();
 }
+else if (window.location.href.indexOf('/Confirmation.aspx') >= 0){
+    download_multi();
+}
+else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0 ){
+    download_auto();
+}
+else if (window.location.href.indexOf('/Acpa/') >= 0 ){
+    fix_printer();
+}
+else{
+    console.log('欢迎使用EasyGoEnhancer,详情请见：http://www.maoyanqing.com/download/easygoenhancer.html')
+};
 function load_toDoList() {
     'use strict';
     var DBSX_url = "/MoreTask3.aspx";

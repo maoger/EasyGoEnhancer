@@ -58,7 +58,7 @@
 * Version 2.9
     * 美化代码。
 
-* Version 3.0
+* Version 3.x
     * 小修小补。
 
 ## 3、免责声明
