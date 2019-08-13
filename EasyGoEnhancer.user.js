@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.8
+// @version      3.8.1
 // @description  Make EasyGo to be easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
@@ -30,7 +30,7 @@ else if (window.location.href.indexOf('/Acpa/') >= 0 ){
     fix_printer();
 }
 else{
-    console.log('欢迎使用EasyGoEnhancer,详情请见：http://www.maoyanqing.com/download/easygoenhancer.html')
+    console.log('欢迎使用EasyGoEnhancer,详情请见：http://maoyanqing.com/download/easygoenhancer.html')
 };
 function load_toDoList() {
     'use strict';
@@ -109,7 +109,7 @@ function load_toDoList() {
                         bar.css("width",m.toString() + "%");
                     }
                     else{
-                        console.log('欢迎使用EasyGoEnhancer,详情请见：http://www.maoyanqing.com/download/easygoenhancer.html')
+                        console.log('欢迎使用EasyGoEnhancer,详情请见：http://maoyanqing.com/download/easygoenhancer.html')
                     }
                     if ( m >= 100 ) {
                         clearInterval(loadingRate);
@@ -199,7 +199,7 @@ function download_multi(){
     mao_downloader_multi.insertAfter(dingWei_multi);
     var dingWei_title = $("#ctl00_PageBody_AspNetPager1");
     var mao_reminder_multi = $("<td/>")
-        .html("<br/><hr/><strong>Notes:</strong><br/><span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>1、提示<br/>点击上述【查询】按钮，查看更多选项；比如：可以按照 “回函扫描创建日期” 、 “回函收件人” 等，先筛选回函结果，再下载……<br/><br/>2、建议<br/>①将浏览器设置为静默下载（取消“每次下载前提示保存位置”）；<br/>②设置浏览器为“始终允许此网站的弹出式窗口”。<br/><br/>3、受限于网速，反应可能会比较慢……请耐心等待全部下载完成后，再关闭后续的子页面。<br/><br/>4、更多信息，详见：<a target='_blank' href='http://www.maoyanqing.com/download/easygoenhancer.html' style='font-family: Calibri; font-size: 12px; color: #0000cc;'>EasyGoEnhancer官网</a></span>");
+        .html("<br/><hr/><strong>Notes:</strong><br/><span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>1、提示<br/>点击上述【查询】按钮，查看更多选项；比如：可以按照 “回函扫描创建日期” 、 “回函收件人” 等，先筛选回函结果，再下载……<br/><br/>2、建议<br/>①将浏览器设置为静默下载（取消“每次下载前提示保存位置”）；<br/>②设置浏览器为“始终允许此网站的弹出式窗口”。<br/><br/>3、受限于网速，反应可能会比较慢……请耐心等待全部下载完成后，再关闭后续的子页面。<br/><br/>4、更多信息，详见：<a target='_blank' href='http://maoyanqing.com/download/easygoenhancer.html' style='font-family: Calibri; font-size: 12px; color: #0000cc;'>EasyGoEnhancer官网</a></span>");
     mao_reminder_multi.insertAfter(dingWei_title);
     mao_downloader_multi.click(function(){
         var c ='';
