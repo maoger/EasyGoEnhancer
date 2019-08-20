@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.8.2
+// @version      3.8.3
 // @description  Make EasyGo to be easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
@@ -14,23 +14,27 @@
 // @license      MIT
 
 // ==/UserScript==
-
-$("title").html("EasyGo | Maoger");
-if ($(".NewTitle1").length > 0){
-    load_working_hours();
-    load_toDoList();
-}
-else if (window.location.href.indexOf('/Confirmation.aspx') >= 0){
-    download_multi();
-}
-else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0 ){
-    download_auto();
-}
-else if (window.location.href.indexOf('/RiskManagement/') >= 0 ){
-    fix_printer();
-}
-else{
-    console.log('欢迎使用EasyGoEnhancer,详情请见：http://maoyanqing.com/download/easygoenhancer.html')
+it_works();
+function it_works(){
+    'use strict';
+    $("title").html("EasyGo | Maoger");
+    if ($(".NewTitle1").length > 0){
+        load_working_hours();
+        load_toDoList();
+    }
+    else if (window.location.href.indexOf('/Confirmation.aspx') >= 0){
+        download_multi();
+        save_letter();
+    }
+    else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0 ){
+        download_auto();
+    }
+    else if (window.location.href.indexOf('/RiskManagement/') >= 0 ){
+        fix_printer();
+    }
+    else{
+        console.log('欢迎使用EasyGoEnhancer !')
+    }
 };
 function load_toDoList() {
     'use strict';
@@ -85,6 +89,16 @@ function load_toDoList() {
         })
         .html("项目园地<span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>「询证函下载入口」</span>");
     fake_tags.append(XMYD);
+    if (window.localStorage && localStorage.letter_href) {
+        var recent_letter = $('<a/>')
+        .attr("href",localStorage.letter_href)
+        .css({
+        "margin-right": "30px",
+        "color":"#333",
+        })
+        .html("最近查看的询证函");
+        fake_tags.append(recent_letter);
+    }
     var m = 0;
     for (var i = 0; i<toDoList_names.length; i++) {
         var name = toDoList_names[i];
@@ -109,15 +123,15 @@ function load_toDoList() {
                         bar.css("width",m.toString() + "%");
                     }
                     else{
-                        console.log('欢迎使用EasyGoEnhancer,详情请见：http://maoyanqing.com/download/easygoenhancer.html')
-                    }
+                        console.log('欢迎使用EasyGoEnhancer !')
+                    };
                     if ( m >= 100 ) {
                         clearInterval(loadingRate);
                         setTimeout(function(){
                             load_container.css("margin","0px");
                             bar.css({"width" : "0%","height":"0px"});
                         },600);
-                    }
+                    };
                 },10);
             }
             if (statusTxt === "error") {
@@ -125,7 +139,7 @@ function load_toDoList() {
             }
         });
     }
-}
+};
 function load_working_hours(){
     'use strict';
     var fake_tags = $(".NewTitle1");
@@ -165,15 +179,16 @@ function getBlob(url) {
         xhr.onload = () => {
             if (xhr.status === 200) {
                 resolve(xhr.response);
-            }
+            };
         };
         xhr.send();
     });
-}
+};
 function saveAs(blob, filename) {
     if (window.navigator.msSaveOrOpenBlob) {
         navigator.msSaveBlob(blob, filename);
-    } else {
+    }
+    else {
         const link = document.createElement('a');
         const body = document.querySelector('body');
         link.href = window.URL.createObjectURL(blob);
@@ -184,12 +199,12 @@ function saveAs(blob, filename) {
         body.removeChild(link);
         window.URL.revokeObjectURL(link.href);
     }
-}
+};
 function download(url, filename) {
     getBlob(url).then(blob => {
         saveAs(blob, filename);
-    });
-}
+    })
+};
 function download_multi(){
     'use strict';
     var dingWei_multi = $("#ctl00_PageBody_lblFullName");
@@ -211,7 +226,7 @@ function download_multi(){
             }
         }
     });
-}
+};
 function download_auto() {
     'use strict';
     var letter_id = $('#ctl00_PageBody_lblConfID').text();
@@ -255,18 +270,18 @@ function download_auto() {
                 }
                 else{
                     filename = letter_id + '_' + letter_name + '_' + j.toString() + '.' + file_type;
-                }
+                };
             download(url,filename);
             }
         }
         setTimeout(close_tab,60000);
     }
-}
+};
 function close_tab(){
-    window.opener=null;
+    window.opener = null;
     window.open('','_self');
     window.close();
-}
+};
 function fix_printer(){
     'use strict';
     var btn =  $("#Button1");
@@ -284,4 +299,11 @@ function fix_printer(){
         btn.removeAttr("onclick");
         btn.attr("onclick","window.print();");
     }
-}
+};
+function save_letter(){
+    'use strict';
+    if (window.localStorage){
+        var loc = window.location;
+        localStorage.letter_href = loc.href.replace(loc.origin,'');
+    }
+};

@@ -1,46 +1,30 @@
-// ==UserScript==
-// @name         EasyGoEnhancer
-// @icon         http://www.ascendacpa.com.cn/favicon.ico
-// @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.8.2
-// @description  Make EasyGo to be easier to go.
-// @author       Maoger
-// @match        http*://*.ascendacpa.com.cn/*
-// @match        http*://10.131.0.7/*
-// @require      http://code.jquery.com/jquery-3.4.1.min.js
-// @updateURL    https://openuserjs.org/meta/maoger/EasyGoEnhancer.meta.js
-// @grant        GM_openInTab
-// @copyright    2016, maoger (https://openuserjs.org/users/maoger)
-// @license      MIT
+it_works();
+function it_works(){
+    'use strict';
 
-// ==/UserScript==
+    $("title").html("EasyGo | Maoger");
 
-// 删除 注释 //：^\s*//[\s\S]*?\n
-// 删除 注释 /* */：^\s*/\*[\s\S]*?\n\*/\n
-// 删除 空白行：^\s*\n
-// 删除 xml注释：^\s*<!-[\s\S]*?-->
-
-$("title").html("EasyGo | Maoger");
-
-// 判断：若为首页，执行指定JS
-if ($(".NewTitle1").length > 0){
-    load_working_hours();
-    load_toDoList();
-}
-// 判断：若为询证函下载主页，添加 批量下载按钮
-else if (window.location.href.indexOf('/Confirmation.aspx') >= 0){
-    download_multi();
-}
-// 判断：若为每张询证函界面，自动下载
-else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0 ){
-    download_auto();
-}
-// 判断：修复打印按钮
-else if (window.location.href.indexOf('/RiskManagement/') >= 0 ){
-    fix_printer();
-}
-else{
-    console.log('欢迎使用EasyGoEnhancer,详情请见：http://maoyanqing.com/download/easygoenhancer.html')
+    // 判断：若为首页，执行指定JS
+    if ($(".NewTitle1").length > 0){
+        load_working_hours();
+        load_toDoList();
+    }
+    // 判断：若为询证函下载主页：①添加 批量下载按钮，②更新或保存询证函ID到localStorage
+    else if (window.location.href.indexOf('/Confirmation.aspx') >= 0){
+        download_multi();
+        save_letter();
+    }
+    // 判断：若为每张询证函界面，自动下载
+    else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0 ){
+        download_auto();
+    }
+    // 判断：修复打印按钮
+    else if (window.location.href.indexOf('/RiskManagement/') >= 0 ){
+        fix_printer();
+    }
+    else{
+        console.log('欢迎使用EasyGoEnhancer !')
+    }
 };
 
 // ============================= Start: Load_ToDoList ========================================
@@ -80,11 +64,10 @@ function load_toDoList() {
             "background" : "grey",
             "border-radius" : "1px",
         });
-
-    // 将进度条的容器插入 待办事项容器 和 首页“待办事项”标签 中间
     load_container.insertAfter(fake_tags);
 
     // 新建：进度条
+    // box-shadow： 原来这里使用的是3B8CF8
     var bar = $("<span/>")
         .attr("id" , "barsmooth" )
         .addClass("smooth")
@@ -93,11 +76,9 @@ function load_toDoList() {
             "width" : "0%",
             "border-radius" : "1px",
             "display" : "block",
-            "box-shadow" : "0px 0px 10px 1px #CC66FF",// 原来这里使用的是3B8CF8
+            "box-shadow" : "0px 0px 10px 1px #CC66FF",
             "background-color" : "#fff"
         });
-
-    // 插入：将“进度条”插入“进度条容器”中
     load_container.append(bar);
 
     // 新建：名为“动态报备”的快捷标签
@@ -108,8 +89,6 @@ function load_toDoList() {
         "color":"#333",
         })
         .html("动态报备");
-
-    // 将“动态报备”的快捷标签插入到“待办事项”按钮后
     fake_tags.append(DTBB);
 
     // 新建：名为“申报工时”的快捷标签，并插入页面中
@@ -131,6 +110,18 @@ function load_toDoList() {
         })
         .html("项目园地<span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>「询证函下载入口」</span>");
     fake_tags.append(XMYD);
+
+    // 新建：名为“最近查看的询证函”的快捷标签，并插入页面中
+    if (window.localStorage && localStorage.letter_href) {
+        var recent_letter = $('<a/>')
+        .attr("href",localStorage.letter_href)
+        .css({
+        "margin-right": "30px",
+        "color":"#333",
+        })
+        .html("最近查看的询证函");
+        fake_tags.append(recent_letter);
+    }
 
     // 定义：一个Number类型变量，用于设置进度条的width的百分比
     var m = 0;
@@ -165,15 +156,15 @@ function load_toDoList() {
                         bar.css("width",m.toString() + "%");
                     }
                     else{
-                        console.log('欢迎使用EasyGoEnhancer,详情请见：http://maoyanqing.com/download/easygoenhancer.html')
-                    }
+                        console.log('欢迎使用EasyGoEnhancer !')
+                    };
                     if ( m >= 100 ) {
                         clearInterval(loadingRate);
                         setTimeout(function(){
                             load_container.css("margin","0px");
                             bar.css({"width" : "0%","height":"0px"});
                         },600);
-                    }
+                    };
                 },10);
             }
             if (statusTxt === "error") {
@@ -181,7 +172,7 @@ function load_toDoList() {
             }
         });
     }
-}
+};
 // ============================= End: Load_ToDoList ========================================
 
 
@@ -238,7 +229,7 @@ function load_working_hours(){
 获取 blob
     @param  {String} url 目标文件地址
     @return {Promise}
- */
+*/
 function getBlob(url) {
     return new Promise(resolve => {
         const xhr = new XMLHttpRequest();
@@ -248,12 +239,12 @@ function getBlob(url) {
         xhr.onload = () => {
             if (xhr.status === 200) {
                 resolve(xhr.response);
-            }
+            };
         };
 
         xhr.send();
     });
-}
+};
 
 /*
 saveAs
@@ -263,7 +254,8 @@ saveAs
 function saveAs(blob, filename) {
     if (window.navigator.msSaveOrOpenBlob) {
         navigator.msSaveBlob(blob, filename);
-    } else {
+    }
+    else {
         const link = document.createElement('a');
         const body = document.querySelector('body');
 
@@ -278,7 +270,7 @@ function saveAs(blob, filename) {
 
         window.URL.revokeObjectURL(link.href);
     }
-}
+};
 
 /*
 download
@@ -288,8 +280,8 @@ download
 function download(url, filename) {
     getBlob(url).then(blob => {
         saveAs(blob, filename);
-    });
-}
+    })
+};
 // End:下载并重命名的一整套方法 ===================================
 
 // 批量下载
@@ -321,7 +313,7 @@ function download_multi(){
             }
         }
     });
-}
+};
 
 function download_auto() {
     'use strict';
@@ -381,20 +373,20 @@ function download_auto() {
                 }
                 else{
                     filename = letter_id + '_' + letter_name + '_' + j.toString() + '.' + file_type;
-                }
+                };
             download(url,filename);
             }
         }
         // 下载完，1分钟后关闭当前页面
         setTimeout(close_tab,60000);
     }
-}
+};
 
 function close_tab(){
-    window.opener=null;
+    window.opener = null;
     window.open('','_self');
     window.close();
-}
+};
 
 // ============================= End: 下载询证函 ========================================
 
@@ -419,5 +411,17 @@ function fix_printer(){
         btn.removeAttr("onclick");
         btn.attr("onclick","window.print();");
     }
-}
+};
 // ============================= End: 修改打印按钮 ========================================
+
+
+// ============================= Start: 存储最近一次打开的询证函查询界面 ========================================
+function save_letter(){
+    'use strict';
+    if (window.localStorage){
+        var loc = window.location;
+        localStorage.letter_href = loc.href.replace(loc.origin,'');
+        // console.log(localStorage.letter_href);
+    }
+};
+// ============================= End: 存储最近一次打开的询证函查询界面 ========================================
