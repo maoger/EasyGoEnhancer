@@ -2,8 +2,8 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.8.3
-// @description  Make EasyGo to be easier to go.
+// @version      3.8.4
+// @description  Make EasyGo easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
 // @match        http*://10.131.0.7/*
@@ -17,7 +17,7 @@
 it_works();
 function it_works(){
     'use strict';
-    $("title").html("EasyGo | Maoger");
+    $("title").html("EasyGo | maoyanqing.com");
     if ($(".NewTitle1").length > 0){
         load_working_hours();
         load_toDoList();
@@ -207,6 +207,7 @@ function download(url, filename) {
 };
 function download_multi(){
     'use strict';
+    $(".menubar_title")[0].innerHTML = "EasyGoEhancer";
     var dingWei_multi = $("#ctl00_PageBody_lblFullName");
     var mao_downloader_multi = $("<button/>")
         .attr('type','button')
