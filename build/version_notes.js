@@ -288,7 +288,7 @@ function download(url, filename) {
 function download_multi(){
     'use strict';
 
-    $(".menubar_title")[0].innerHTML = "EasyGoEhancer";
+    $(".menubar_title")[0].innerHTML = "EasyGoEnhancer";
 
     // 新建：“下载”按钮
     var dingWei_multi = $("#ctl00_PageBody_lblFullName");
