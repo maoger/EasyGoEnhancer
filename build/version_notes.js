@@ -2,10 +2,10 @@ it_works();
 function it_works(){
     'use strict';
 
-    $("title").html("EasyGo | Maoger");
+    $('title').html('EasyGo | maoyanqing.com');
 
     // 判断：若为首页，执行指定JS
-    if ($(".NewTitle1").length > 0){
+    if ($('.NewTitle1').length > 0){
         load_working_hours();
         load_toDoList();
     }
@@ -19,11 +19,12 @@ function it_works(){
         download_auto();
     }
     // 判断：修复打印按钮
-    else if (window.location.href.indexOf('/RiskManagement/') >= 0 ){
+    else if (window.location.href.indexOf('/RiskManagement/') >= 0){
+        $('title').html('EasyGo');
         fix_printer();
     }
     else{
-        console.log('欢迎使用EasyGoEnhancer !')
+        console.log('欢迎使用 EasyGoEnhancer !')
     }
 };
 
@@ -396,22 +397,14 @@ function close_tab(){
 function fix_printer(){
     'use strict';
 
-    var btn =  $("#Button1");
-    if (btn.val().indexOf("打印") >= 0){
-        btn.removeAttr("onclick");
-        btn.attr("onclick","window.print();");
-    }
-
-    btn =  $("#Button2");
-    if (btn.val().indexOf("打印") >= 0){
-        btn.removeAttr("onclick");
-        btn.attr("onclick","window.print();");
-    }
-
-    btn =  $("#Button3");
-    if (btn.val().indexOf("打印") >= 0){
-        btn.removeAttr("onclick");
-        btn.attr("onclick","window.print();");
+    var btns_length = $('.button_bak').length;
+    var btn;
+    for (var i = 0; i < btns_length; i++){
+        btn = $('#Button'+(i+1));
+        if (btn.val().indexOf("打印") >= 0){
+            btn.removeAttr("onclick");
+            btn.attr("onclick","window.print();");
+        }
     }
 };
 // ============================= End: 修改打印按钮 ========================================

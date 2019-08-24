@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.8.5
+// @version      3.8.6
 // @description  Make EasyGo easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
@@ -17,8 +17,8 @@
 it_works();
 function it_works(){
     'use strict';
-    $("title").html("EasyGo | maoyanqing.com");
-    if ($(".NewTitle1").length > 0){
+    $('title').html('EasyGo | maoyanqing.com');
+    if ($('.NewTitle1').length > 0){
         load_working_hours();
         load_toDoList();
     }
@@ -26,14 +26,15 @@ function it_works(){
         download_multi();
         save_letter();
     }
-    else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0 ){
+    else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0){
         download_auto();
     }
-    else if (window.location.href.indexOf('/RiskManagement/') >= 0 ){
+    else if (window.location.href.indexOf('/RiskManagement/') >= 0){
+        $('title').html('EasyGo');
         fix_printer();
     }
     else{
-        console.log('欢迎使用EasyGoEnhancer !')
+        console.log('欢迎使用 EasyGoEnhancer !')
     }
 };
 function load_toDoList() {
@@ -285,20 +286,14 @@ function close_tab(){
 };
 function fix_printer(){
     'use strict';
-    var btn =  $("#Button1");
-    if (btn.val().indexOf("打印") >= 0){
-        btn.removeAttr("onclick");
-        btn.attr("onclick","window.print();");
-    }
-    btn =  $("#Button2");
-    if (btn.val().indexOf("打印") >= 0){
-        btn.removeAttr("onclick");
-        btn.attr("onclick","window.print();");
-    }
-    btn =  $("#Button3");
-    if (btn.val().indexOf("打印") >= 0){
-        btn.removeAttr("onclick");
-        btn.attr("onclick","window.print();");
+    var btns_length = $('.button_bak').length;
+    var btn;
+    for (var i = 0; i < btns_length; i++){
+        btn = $('#Button'+(i+1));
+        if (btn.val().indexOf("打印") >= 0){
+            btn.removeAttr("onclick");
+            btn.attr("onclick","window.print();");
+        }
     }
 };
 function save_letter(){
