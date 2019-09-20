@@ -380,8 +380,9 @@ function download_auto() {
             download(url,filename);
             }
         }
-        // 下载完，1分钟后关闭当前页面
-        setTimeout(close_tab,60000);
+        // 下载完，2分钟后关闭当前页面
+        // 低网速下，1分钟可能时间不够
+        setTimeout(close_tab,120000);
     }
 };
 

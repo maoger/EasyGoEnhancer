@@ -2,15 +2,14 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.8.6
+// @version      3.8.7
 // @description  Make EasyGo easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
 // @match        http*://10.131.0.7/*
 // @require      http://code.jquery.com/jquery-3.4.1.min.js
 // @updateURL    https://openuserjs.org/meta/maoger/EasyGoEnhancer.meta.js
-// @grant        GM_openInTab
-// @copyright    2016, maoger (https://openuserjs.org/users/maoger)
+// @copyright    2019, maoger (https://openuserjs.org/users/maoger)
 // @license      MIT
 
 // ==/UserScript==
@@ -276,7 +275,7 @@ function download_auto() {
             download(url,filename);
             }
         }
-        setTimeout(close_tab,60000);
+        setTimeout(close_tab,120000);
     }
 };
 function close_tab(){
