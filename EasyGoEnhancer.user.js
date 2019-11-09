@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.8.7
+// @version      3.8.8
 // @description  Make EasyGo easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
@@ -87,7 +87,7 @@ function load_toDoList() {
         "margin-right": "30px",
         "color":"#333",
         })
-        .html("项目园地<span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>「询证函下载入口」</span>");
+        .html("函证中心");
     fake_tags.append(XMYD);
     if (window.localStorage && localStorage.letter_href) {
         var recent_letter = $('<a/>')
