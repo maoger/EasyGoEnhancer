@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.8.8
+// @version      3.8.9
 // @description  Make EasyGo easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
@@ -13,8 +13,8 @@
 // @license      MIT
 
 // ==/UserScript==
-it_works();
-function it_works(){
+EasyGoEnhancer_main();
+function EasyGoEnhancer_main(){
     'use strict';
     $('title').html('EasyGo | maoyanqing.com');
     if ($('.NewTitle1').length > 0){
@@ -25,8 +25,8 @@ function it_works(){
         download_multi();
         save_letter();
     }
-    else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0){
-        download_auto();
+    else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0 ){
+        letter_single_download();
     }
     else if (window.location.href.indexOf('/RiskManagement/') >= 0){
         $('title').html('EasyGo');
@@ -92,6 +92,7 @@ function load_toDoList() {
     if (window.localStorage && localStorage.letter_href) {
         var recent_letter = $('<a/>')
         .attr("href",localStorage.letter_href)
+        .attr("target","_blank")
         .css({
         "margin-right": "30px",
         "color":"#333",
@@ -211,24 +212,49 @@ function download_multi(){
     var dingWei_multi = $("#ctl00_PageBody_lblFullName");
     var mao_downloader_multi = $("<button/>")
         .attr('type','button')
-        .html("<span style='font-family:Calibri; font-size: 14px; color: #9932CD'>一键下载 \>\>以下全部询证函</span>");
+        .html("<span style='font-family:Calibri; font-size: 14px; color: #009CDE'>一键下载 \>\>以下全部询证函</span>");
     mao_downloader_multi.insertAfter(dingWei_multi);
     var dingWei_title = $("#ctl00_PageBody_AspNetPager1");
     var mao_reminder_multi = $("<td/>")
         .html("<br/><hr/><strong>Notes:</strong><br/><span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>1、提示<br/>点击上述【查询】按钮，查看更多选项；比如：可以按照 “回函扫描创建日期” 、 “回函收件人” 等，先筛选回函结果，再下载……<br/><br/>2、建议<br/>①将浏览器设置为静默下载（取消“每次下载前提示保存位置”）；<br/>②设置浏览器为“始终允许此网站的弹出式窗口”。<br/><br/>3、受限于网速，反应可能会比较慢……请耐心等待全部下载完成后，再关闭后续的子页面。<br/><br/>4、更多信息，详见：<a target='_blank' href='http://maoyanqing.com/download/easygoenhancer.html' style='font-family: Calibri; font-size: 12px; color: #0000cc;'>EasyGoEnhancer官网</a></span>");
     mao_reminder_multi.insertAfter(dingWei_title);
+    if (window.localStorage){
+        var page_num_todo = localStorage.letter_todo_pages;
+        if (page_num_todo > 1){
+            localStorage.letter_todo_pages = page_num_todo - 1;
+            console.log('[>] 开始下载第 ' + page_num_todo + ' 页...');
+            letter_traverse_per_page();
+            __doPostBack('ctl00$PageBody$AspNetPager1',page_num_todo);
+        }
+    }
     mao_downloader_multi.click(function(){
-        var c ='';
-        var hrefArr = document.getElementsByTagName('a');
-        for ( var i=0; i<hrefArr.length; i++ ){
-            c = hrefArr[i].href;
-            if (c.indexOf("ID")>=0){
-                window.open(c);
+        try{
+            var page_num_total = $('#ctl00_PageBody_AspNetPager1 > table > tbody > tr > td:nth-child(2) > a:last').attr("href").split("'")[3];
+        }
+        catch (err) {
+            page_num_total = 1;
+        }
+        console.log('[>] 开始下载第 1 页...');
+        letter_traverse_per_page();
+        if (page_num_total > 1) {
+            if (window.localStorage){
+                localStorage.letter_todo_pages = page_num_total;
+                __doPostBack('ctl00$PageBody$AspNetPager1',page_num_total);
             }
         }
     });
 };
-function download_auto() {
+function letter_traverse_per_page(){
+    var c ='';
+    var hrefArr = document.getElementsByTagName('a');
+    for ( var i=0; i<hrefArr.length; i++ ){
+        c = hrefArr[i].href;
+        if (c.indexOf("ID")>=0){
+            window.open(c);
+        }
+    }
+};
+function letter_single_download() {
     'use strict';
     var letter_id = $('#ctl00_PageBody_lblConfID').text();
     var letter_name = $('#ctl00_PageBody_txtConfirmationName').val();
