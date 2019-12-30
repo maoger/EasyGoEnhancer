@@ -291,114 +291,66 @@ function download(url, filename) {
 function download_multi(){
     'use strict';
 
-    $(".menubar_title")[0].innerHTML = "<a href='//maoyanqing.com' target='_blank' style='font-family:Calibri; font-size: 26px; color: #009CDE'>EasyGoEnhancer</a>";
+    $(".menubar_title")[0].innerHTML = "EasyGoEnhancer";
 
-    // 页面底部提醒：使用【查询】按钮筛选信息等
-    var ele_footer = $("#ctl00_PageBody_AspNetPager1");
+    // 新建：“下载”按钮
+    var dingWei_multi = $("#ctl00_PageBody_lblFullName");
+    var mao_downloader_multi = $("<button/>")
+        .attr('type','button')
+        .html("<span style='font-family:Calibri; font-size: 14px; color: #009CDE'>一键下载 \>\>以下全部询证函</span>");
+    mao_downloader_multi.insertAfter(dingWei_multi);
+
+    // 新建：提醒
+    var dingWei_title = $("#ctl00_PageBody_AspNetPager1");
     var mao_reminder_multi = $("<td/>")
         .html("<br/><hr/><strong>Notes:</strong><br/><span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>1、提示<br/>点击上述【查询】按钮，查看更多选项；比如：可以按照 “回函扫描创建日期” 、 “回函收件人” 等，先筛选回函结果，再下载……<br/><br/>2、建议<br/>①将浏览器设置为静默下载（取消“每次下载前提示保存位置”）；<br/>②设置浏览器为“始终允许此网站的弹出式窗口”。<br/><br/>3、受限于网速，反应可能会比较慢……请耐心等待全部下载完成后，再关闭后续的子页面。<br/><br/>4、更多信息，详见：<a target='_blank' href='http://maoyanqing.com/download/easygoenhancer.html' style='font-family: Calibri; font-size: 12px; color: #0000cc;'>EasyGoEnhancer官网</a></span>");
-    mao_reminder_multi.insertAfter(ele_footer);
+    mao_reminder_multi.insertAfter(dingWei_title);
 
-    // 下载进度提醒
-    var ele_auditClient = $("#ctl00_PageBody_lblFullName");
-
-    // 用来存储待下载询证函清单
-    var letter_obj = {};
-    var letter_obj2str = '';
-
-    var letter_todo_num = localStorage.letter_download_mark;
-    if (letter_todo_num == undefined){
-        var letter_todo_page = 0;
+    if (window.localStorage){
+        var page_num_todo = localStorage.letter_todo_pages;
+        if (page_num_todo > 1){
+            localStorage.letter_todo_pages = page_num_todo - 1;
+            console.log('[>] 开始下载第 ' + page_num_todo + ' 页...');
+            letter_traverse_per_page();
+            __doPostBack('ctl00$PageBody$AspNetPager1',page_num_todo);
+        }
     }
-    else{
-        var letter_todo_page = Math.ceil(letter_todo_num / 10);
-    }
+
+    mao_downloader_multi.click(function(){
+        try{
+            var page_num_total = $('#ctl00_PageBody_AspNetPager1 > table > tbody > tr > td:nth-child(2) > a:last').attr("href").split("'")[3];
+        }
+        catch (err) {
+            page_num_total = 1;
+        }
+
+        console.log('[>] 开始下载第 1 页...');
+        letter_traverse_per_page();
     
-    if (letter_todo_page > 0){
-        letter_obj2str = localStorage.letter_download;
-        if (letter_obj2str == undefined || letter_obj2str == ''){
-            letter_obj = {};
-        }
-        else{
-            letter_obj = JSON.parse(letter_obj2str);
-        }
-
-        var letter_todo_index = localStorage.letter_download_mark;
-        var letter_href = '';
-        var hrefArr = document.getElementsByTagName('a');
-        for ( var i=0; i<hrefArr.length; i++ ){
-            letter_href = hrefArr[i].href;
-            if (letter_href.indexOf('?ID=')>=0){
-                letter_obj[letter_todo_index--] = letter_href;
+        if (page_num_total > 1) {
+            // 把 待下载总页数 保存下来，并跳转到对应页面
+            if (window.localStorage){
+                localStorage.letter_todo_pages = page_num_total;
+                __doPostBack('ctl00$PageBody$AspNetPager1',page_num_total);
             }
         }
-        letter_obj2str = JSON.stringify(letter_obj);
-        localStorage.letter_download = letter_obj2str;
 
-        letter_todo_num = Math.max(0,letter_todo_num - 10);
-        letter_todo_page = Math.ceil(letter_todo_num / 10);
-        localStorage.letter_download_mark = letter_todo_num;
-        if (letter_todo_page > 0){
-            __doPostBack('ctl00$PageBody$AspNetPager1',letter_todo_page);
-        }
-    }
-
-    if (letter_todo_num == 0){
-        letter_obj2str = localStorage.letter_download;
-
-        if (letter_obj2str == undefined || letter_obj2str == ""){
-            letter_obj = {};
-        }
-        else{
-            letter_obj = JSON.parse(letter_obj2str);
-        }
-
-        var progress_reminder = "<span style='font-family:Calibri; font-size: 14px; color: #3F9C35'>EasyGoEnhancer 正在为您自动下载询证函... 请耐心等待所有询证函下载完毕后再关闭本网页...</span>";
-        ele_auditClient.append(progress_reminder);
-
-        for(var p in letter_obj){
-            create_iframe(p,letter_obj[p],0,0);
-        }
-
-        localStorage.removeItem('letter_download');
-        localStorage.removeItem('letter_download_mark');
-
-    }
-
-    // 【判断】是否需要添加：“下载”按钮
-    var letter_todo_total = $("#ctl00_PageBody_AspNetPager1 > table > tbody > tr > td:nth-child(1)").text().split("：")[1].split(" ")[0];
-    if (letter_todo_total > 0 && letter_todo_num == undefined){
-        var mao_downloader_multi = $("<button/>")
-            .attr('type','button')
-            .html("<span style='font-family:Calibri; font-size: 14px; color: #009CDE'><b>一键下载</b> 以下列示的所有询证函</span>");
-        mao_downloader_multi.insertAfter(ele_auditClient);
-
-        mao_downloader_multi.click(function(){
-            this.style.display = "none";
-            localStorage.letter_download_mark = letter_todo_total;
-
-            letter_todo_page = Math.ceil(letter_todo_total / 10);
-            if (letter_todo_page>1){
-                __doPostBack('ctl00$PageBody$AspNetPager1',letter_todo_page);
-            }
-            else {
-                location.reload();
-            }
-        })
-    }
+    });
 };
 
+function letter_traverse_per_page(){
+    // 打开所有链接
+    var c ='';
+    var hrefArr = document.getElementsByTagName('a');
+    for ( var i=0; i<hrefArr.length; i++ ){
+        c = hrefArr[i].href;
 
-// https://www.jianshu.com/p/63ef6b1c08ec
-function create_iframe(id,url,width,height){
-    var iframe = document.createElement("iframe");
-    iframe.id=id;
-    iframe.width=width;
-    iframe.height=height;
-    iframe.src=url;
-    document.body.appendChild(iframe);
+        if (c.indexOf("ID")>=0){
+            window.open(c);
+        }
+    }
 
-}
+};
 
 function letter_single_download() {
     'use strict';
@@ -409,7 +361,7 @@ function letter_single_download() {
     var filename = '';
 
     // 定位
-    var ele_perID = $("#ctl00_PageBody_lblConfID");
+    var dingWei_perID = $("#ctl00_PageBody_lblConfID");
 
     // 新建提示1：已回函，开始静默下载
     var mao_reminder_perID = $("<span/>")
@@ -439,11 +391,11 @@ function letter_single_download() {
     }
 
     if (url ==''){
-        mao_nothing_perID.insertAfter(ele_perID );
+        mao_nothing_perID.insertAfter(dingWei_perID );
     }
     else{
         // 如果已回函（url非空），则开始自动下载
-        mao_reminder_perID.insertAfter(ele_perID );
+        mao_reminder_perID.insertAfter(dingWei_perID );
         var j = 0;
         for (i=0; i<hrefArr.length; i++ ){
             c = hrefArr[i].href;
@@ -464,17 +416,15 @@ function letter_single_download() {
         }
         // 下载完，2分钟后关闭当前页面
         // 低网速下，1分钟可能时间不够
-        // setTimeout(close_tab,120000);
+        setTimeout(close_tab,120000);
     }
 };
 
-/*
 function close_tab(){
     window.opener = null;
     window.open('','_self');
     window.close();
 };
-*/
 
 // ============================= End: 下载询证函 ========================================
 
