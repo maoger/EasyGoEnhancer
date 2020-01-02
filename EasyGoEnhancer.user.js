@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.9.3
+// @version      3.9.4
 // @description  Make EasyGo easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
@@ -283,7 +283,7 @@ function letter_download_multi(){
     if (letter_todo_total > 0 && letter_todo_num == undefined){
         var btn_download = $("<button/>")
             .attr('type','button')
-            .html("<span style='font-family:Calibri; font-size: 14px; color: #009CDE'><b>一键下载</b> 以下列示的所有询证函</span>");
+            .html("<span style='font-family:Calibri; font-size: 14px; color: #009CDE'><b>一键下载</b>&nbsp;以下列示的所有询证函</span>");
         btn_download.insertAfter(ele_auditClient);
         btn_download.click(function(){
             this.style.display = "none";
@@ -361,7 +361,7 @@ function XZHCX_download() {
     var webpage_title = $('#FrameWork_Acpa_EasyGoSelectIndex');
     var btn_download = $("<button/>")
         .attr('type','button')
-        .html("<span style='font-family:Calibri; font-size: 14px; color: #009CDE'><b>一键下载</b> 以下所有询证函&nbsp;&nbsp;</span><span style='font-family:Calibri; font-size: 14px; color: #EEA9B8'>上传日期&nbsp;&nbsp;≥&nbsp;</span>");
+        .html("<span style='font-family:Calibri; font-size: 14px; color: #009CDE'><b>一键下载</b>&nbsp;以下列示的所有询证函中&nbsp;&nbsp;</span><span style='font-family:Calibri; font-size: 14px; color: #EEA9B8'>上传日期&nbsp;&nbsp;≥&nbsp;</span>");
     btn_download.insertAfter(webpage_title);
     var p_space = $("<a/>")
         .html("&nbsp;");
