@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.9.1
+// @version      3.9.2
 // @description  Make EasyGo easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
@@ -23,11 +23,14 @@ function EasyGoEnhancer_main(){
         load_toDoList();
     }
     else if (window.location.href.indexOf('/Confirmation.aspx') >= 0){
-        download_multi();
-        save_letter();
+        letter_download_multi();
+        letter_save_url();
     }
     else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0 ){
-        letter_single_download();
+        letter_download_single_auto();
+    }
+    else if (window.location.href.indexOf('/ConfirmationEdit2014.aspx?ID=') >= 0 ){
+        XZHCX_download();
     }
     else if (window.location.href.indexOf('/RiskManagement/') >= 0){
         $('title').html('EasyGo');
@@ -90,6 +93,15 @@ function load_toDoList() {
         })
         .html("函证中心");
     fake_tags.append(XMYD);
+    var XZHCX = $('<a/>')
+        .attr("href","/Module/Framework/Acpa/Project/ConfirmationList2014.aspx")
+        .attr("target","_blank")
+        .css({
+        "margin-right": "30px",
+        "color":"#333",
+        })
+        .html("询证函查询");
+    fake_tags.append(XZHCX);
     if (window.localStorage && localStorage.letter_href) {
         var recent_letter = $('<a/>')
         .attr("href",localStorage.letter_href)
@@ -102,7 +114,7 @@ function load_toDoList() {
         fake_tags.append(recent_letter);
     }
     var m = 0;
-    for (var i = 0; i<toDoList_names.length; i++) {
+    for (var i=0; i<toDoList_names.length; i++) {
         var name = toDoList_names[i];
         var elt = $("<table/>")
         .attr("data-name", name)
@@ -207,7 +219,7 @@ function download(url, filename) {
         saveAs(blob, filename);
     })
 };
-function download_multi(){
+function letter_download_multi(){
     'use strict';
     $(".menubar_title")[0].innerHTML = "<a href='//maoyanqing.com' target='_blank' style='font-family:Calibri; font-size: 26px; color: #009CDE'>EasyGoEnhancer</a>";
     var ele_footer = $("#ctl00_PageBody_AspNetPager1");
@@ -218,11 +230,12 @@ function download_multi(){
     var letter_obj = {};
     var letter_obj2str = '';
     var letter_todo_num = localStorage.letter_download_mark;
+    var letter_todo_page = 0;
     if (letter_todo_num == undefined){
-        var letter_todo_page = 0;
+        letter_todo_page = 0;
     }
     else{
-        var letter_todo_page = Math.ceil(letter_todo_num / 10);
+        letter_todo_page = Math.ceil(letter_todo_num / 10);
     }
     if (letter_todo_page > 0){
         letter_obj2str = localStorage.letter_download;
@@ -268,11 +281,11 @@ function download_multi(){
     }
     var letter_todo_total = $("#ctl00_PageBody_AspNetPager1 > table > tbody > tr > td:nth-child(1)").text().split("：")[1].split(" ")[0];
     if (letter_todo_total > 0 && letter_todo_num == undefined){
-        var mao_downloader_multi = $("<button/>")
+        var btn_download = $("<button/>")
             .attr('type','button')
             .html("<span style='font-family:Calibri; font-size: 14px; color: #009CDE'><b>一键下载</b> 以下列示的所有询证函</span>");
-        mao_downloader_multi.insertAfter(ele_auditClient);
-        mao_downloader_multi.click(function(){
+        btn_download.insertAfter(ele_auditClient);
+        btn_download.click(function(){
             this.style.display = "none";
             localStorage.letter_download_mark = letter_todo_total;
             letter_todo_page = Math.ceil(letter_todo_total / 10);
@@ -292,15 +305,15 @@ function create_iframe(id,url,width,height){
     iframe.height=height;
     iframe.src=url;
     document.body.appendChild(iframe);
-}
-function letter_single_download() {
+};
+function letter_download_single_auto() {
     'use strict';
     var letter_id = $('#ctl00_PageBody_lblConfID').text();
     var letter_name = $('#ctl00_PageBody_txtConfirmationName').val();
     var filename = '';
     var ele_perID = $("#ctl00_PageBody_lblConfID");
     var mao_reminder_perID = $("<span/>")
-        .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #CDCDCD'>&nbsp;&nbsp;&nbsp;&nbsp;已开始静默下载，稍等片刻……</span>");
+        .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;&nbsp;&nbsp;&nbsp;EasyGoEnhancer 正在为您自动下载询证函... 请耐心等待所有询证函下载完毕后再关闭本网页...</span>");
     var mao_nothing_perID = $("<span/>")
         .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #EEA9B8'>&nbsp;&nbsp;&nbsp;&nbsp;暂未回函！如果已发函很长时间了，请尽快催函，或加强催函力度……</span>");
     var url = '';
@@ -309,7 +322,7 @@ function letter_single_download() {
     var file_split = [];
     var file_type = '';
     var file_type_arr = ['pdf','PDF','jpg','JPG'];
-    for ( var i=0; i<hrefArr.length; i++ ){
+    for (var i=0; i<hrefArr.length; i++ ){
         c = hrefArr[i].href;
         file_split = c.split(".");
         file_type = file_split[file_split.length - 1];
@@ -337,7 +350,78 @@ function letter_single_download() {
                 else{
                     filename = letter_id + '_' + letter_name + '_' + j.toString() + '.' + file_type;
                 };
-            download(url,filename);
+                download(url,filename);
+            }
+        }
+    }
+};
+function XZHCX_download() {
+    'use strict';
+    $(".menubar_title")[0].innerHTML = "<a href='//maoyanqing.com' target='_blank' style='font-family:Calibri; font-size: 26px; color: #009CDE'>EasyGoEnhancer</a>";
+    var webpage_title = $('#FrameWork_Acpa_EasyGoSelectIndex');
+    var btn_download = $("<button/>")
+        .attr('type','button')
+        .html("<span style='font-family:Calibri; font-size: 14px; color: #009CDE'><b>一键下载</b> 以下所有询证函&nbsp;&nbsp;</span><span style='font-family:Calibri; font-size: 14px; color: #EEA9B8'>上传日期&nbsp;&nbsp;≥&nbsp;</span>");
+    btn_download.insertAfter(webpage_title);
+    var p_space = $("<a/>")
+        .html("&nbsp;");
+    p_space.insertAfter(btn_download);
+    var input_date = $("<input/>")
+        .attr('id','input_date')
+        .attr('type','date')
+        .attr('value','');
+    input_date.insertAfter(p_space);
+    var date = new Date();
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    m = m < 10 ? ('0' + m) : m;
+    var d = date.getDate();
+    d = d < 10 ? ('0' + d) : d;
+    var pick_date_str = y + '-' + m + '-' + d;
+    input_date.val(pick_date_str);
+    btn_download.click(function(){
+        this.style.display = "none";
+        var mao_reminder = $("<span/>")
+            .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;&nbsp;&nbsp;&nbsp;EasyGoEnhancer 正在为您自动下载&nbsp;上传日期&nbsp;&nbsp;≥&nbsp;&nbsp;</span>");
+        mao_reminder.insertAfter(webpage_title);
+        var mao_reminder2 = $("<span/>")
+            .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;&nbsp;的询证函... 请耐心等待所有询证函下载完毕后再关闭本网页...</span>");
+        mao_reminder2.insertAfter(input_date);
+        pick_date_str = input_date.val();
+        if (pick_date_str == '' || pick_date_str == undefined){
+            var date = new Date();
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            m = m < 10 ? ('0' + m) : m;
+            var d = date.getDate();
+            d = d < 10 ? ('0' + d) : d;
+            pick_date_str = y + '-' + m + '-' + d;
+        }
+        XZHCX_download_main(pick_date_str);
+    });
+};
+function XZHCX_download_main(pick_date_str){
+    'use strict';
+    var filename = '';
+    var url = '';
+    var upload_date_str = '';
+    var upload_date = new Date();
+    var pick_date = new Date();
+    var hrefArr = document.getElementsByTagName('a');
+    var file_split = [];
+    var file_type = '';
+    var file_type_arr = ['pdf','PDF','jpg','JPG'];
+    for (var i=0; i<hrefArr.length; i++ ){
+        url = hrefArr[i].href;
+        file_split = url.split(".");
+        file_type = file_split[file_split.length - 1];
+        if (file_type_arr.includes(file_type)){
+            upload_date_str = hrefArr[i].parentNode.nextSibling.nextSibling.innerHTML;
+            upload_date = new Date(upload_date_str);
+            pick_date = new Date(pick_date_str);
+            if (upload_date >= pick_date){
+                filename = hrefArr[i].innerHTML;
+                download(url,filename);
             }
         }
     }
@@ -346,7 +430,7 @@ function fix_printer(){
     'use strict';
     var btns_length = $('.button_bak').length;
     var btn;
-    for (var i = 0; i < btns_length; i++){
+    for (var i=0; i < btns_length; i++){
         btn = $('#Button'+(i+1));
         if (btn.val().indexOf("打印") >= 0){
             btn.removeAttr("onclick");
@@ -354,7 +438,7 @@ function fix_printer(){
         }
     }
 };
-function save_letter(){
+function letter_save_url(){
     'use strict';
     if (window.localStorage){
         var loc = window.location;
