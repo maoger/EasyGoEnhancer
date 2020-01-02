@@ -2,7 +2,7 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.9.2
+// @version      3.9.3
 // @description  Make EasyGo easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
@@ -371,6 +371,9 @@ function XZHCX_download() {
         .attr('type','date')
         .attr('value','');
     input_date.insertAfter(p_space);
+    var mao_reminder = $("<p/>")
+        .html("<br/><hr/><strong>Notes:</strong><br/><span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'><b>1、建议：</b>将浏览器设置为静默下载（不弹出下载框），详见：<a target='_blank' href='//maoyanqing.com/download/easygoenhancer-docs.html' style='font-family: Calibri; font-size: 12px; color: #0000cc;'>开启静默下载的操作提示</a><br/>2、更多信息，详见：<a target='_blank' href='//maoyanqing.com/download/easygoenhancer.html' style='font-family: Calibri; font-size: 12px; color: #0000cc;'>EasyGoEnhancer官网</a></span>");
+    mao_reminder.insertAfter(input_date);
     var date = new Date();
     var y = date.getFullYear();
     var m = date.getMonth() + 1;
