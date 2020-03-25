@@ -2,14 +2,14 @@
 // @name         EasyGoEnhancer
 // @icon         http://www.ascendacpa.com.cn/favicon.ico
 // @homepage     https://github.com/maoger/EasyGoEnhancer
-// @version      3.9.5
+// @version      3.9.6
 // @description  Make EasyGo easier to go.
 // @author       Maoger
 // @match        http*://*.ascendacpa.com.cn/*
 // @match        http*://10.131.0.7/*
 // @require      http://code.jquery.com/jquery-3.4.1.min.js
 // @updateURL    https://openuserjs.org/meta/maoger/EasyGoEnhancer.meta.js
-// @copyright    2019, maoger (https://openuserjs.org/users/maoger)
+// @copyright    2016-2020, maoger (https://openuserjs.org/users/maoger)
 // @license      MIT
 
 // ==/UserScript==
@@ -361,16 +361,16 @@ function XZHCX_download() {
     var webpage_title = $('#FrameWork_Acpa_EasyGoSelectIndex');
     var btn_download = $("<button/>")
         .attr('type','button')
-        .html("<span style='font-family:Calibri; font-size: 14px; color: #009CDE'><b>一键下载</b>&nbsp;以下列示的所有询证函中&nbsp;&nbsp;</span><span style='font-family:Calibri; font-size: 14px; color: #EEA9B8'>上传日期&nbsp;&nbsp;≥&nbsp;</span>");
+        .html("<span style='font-family:Calibri; font-size: 16px; color: #009CDE'><b>点击下载</b></span>");
     btn_download.insertAfter(webpage_title);
-    var p_space = $("<a/>")
-        .html("&nbsp;");
-    p_space.insertAfter(btn_download);
+    var btn_reminder = $("<span/>")
+        .html("<span style='font-family:Calibri; font-size: 14px; color: #009CDE'>&nbsp;&nbsp;以下列示的所有询证函中&nbsp;&nbsp;</span><span style='font-family:Calibri; font-size: 14px; color: #EEA9B8'>上传日期</span>&nbsp;<kbd>≥</kbd>&nbsp;");
+    btn_reminder.insertAfter(btn_download);
     var input_date = $("<input/>")
         .attr('id','input_date')
         .attr('type','date')
         .attr('value','');
-    input_date.insertAfter(p_space);
+    input_date.insertAfter(btn_reminder);
     var mao_reminder = $("<p/>")
         .html("<br/><hr/><span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'><b>【建议】</b>将浏览器设置为静默下载（不弹出下载框），详见：<a target='_blank' href='//maoyanqing.com/download/easygoenhancer-docs.html' style='font-family: Calibri; font-size: 12px; color: #0000cc;'>开启静默下载的操作提示</a></span>");
     mao_reminder.insertAfter(input_date);
@@ -385,7 +385,7 @@ function XZHCX_download() {
     btn_download.click(function(){
         this.style.display = "none";
         var mao_reminder = $("<span/>")
-            .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;&nbsp;&nbsp;&nbsp;EasyGoEnhancer 正在为您自动下载&nbsp;上传日期&nbsp;&nbsp;≥&nbsp;&nbsp;</span>");
+            .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;&nbsp;&nbsp;&nbsp;EasyGoEnhancer 正在为您自动下载&nbsp;&nbsp;</span>");
         mao_reminder.insertAfter(webpage_title);
         var mao_reminder2 = $("<span/>")
             .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;&nbsp;的询证函... 请耐心等待所有询证函下载完毕后再关闭本网页...</span>");
