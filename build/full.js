@@ -93,7 +93,7 @@ function load_toDoList() {
         "margin-right": "30px",
         "color":"#333",
         })
-        .html("动态报备");
+        .html("<i class='far fa-check-circle'></i>&nbsp;动态报备");
     fake_tags.append(DTBB);
 
     // 新建：名为“申报工时”的快捷标签，并插入页面中
@@ -103,7 +103,7 @@ function load_toDoList() {
         "margin-right": "30px",
         "color":"#333",
         })
-        .html("申报工时");
+        .html("<i class='far fa-clock'></i>&nbsp;申报工时");
     fake_tags.append(SBGS);
 
     // 新建：名为“项目园地”的快捷标签，并插入页面中
@@ -113,7 +113,7 @@ function load_toDoList() {
         "margin-right": "30px",
         "color":"#333",
         })
-        .html("函证中心");
+        .html("<i class='fas fa-sitemap'></i>&nbsp;函证中心");
         // <span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>「询证函下载入口」</span>
     fake_tags.append(XMYD);
 
@@ -125,7 +125,7 @@ function load_toDoList() {
         "margin-right": "30px",
         "color":"#333",
         })
-        .html("询证函查询");
+        .html("<i class='fas fa-search'></i>&nbsp;询证函查询");
         // <span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>「询证函下载入口」</span>
     fake_tags.append(XZHCX);
 
@@ -138,7 +138,7 @@ function load_toDoList() {
         "margin-right": "30px",
         "color":"#333",
         })
-        .html("最近查看的询证函");
+        .html("<i class='far fa-eye'></i>&nbsp;最近查看的询证函");
         fake_tags.append(recent_letter);
     }
 
@@ -371,7 +371,7 @@ function letter_download_multi(){
             letter_obj = JSON.parse(letter_obj2str);
         }
 
-        var progress_reminder = "<span style='font-family:Calibri; font-size: 14px; color: #3F9C35'>EasyGoEnhancer 正在为您自动下载询证函... 请耐心等待所有询证函下载完毕后再关闭本网页...</span>";
+        var progress_reminder = "<span style='font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;<i class='fas fa-spinner fa-pulse'></i>&nbsp;EasyGoEnhancer 正在为您自动下载询证函... 请耐心等待所有询证函下载完毕后再关闭本网页...</span>";
         ele_auditClient.append(progress_reminder);
 
         for(var p in letter_obj){
@@ -386,9 +386,10 @@ function letter_download_multi(){
     // 【判断】是否需要添加：“下载”按钮
     var letter_todo_total = $("#ctl00_PageBody_AspNetPager1 > table > tbody > tr > td:nth-child(1)").text().split("：")[1].split(" ")[0];
     if (letter_todo_total > 0 && letter_todo_num == undefined){
+
         var btn_download = $("<button/>")
             .attr('type','button')
-            .html("<span style='font-family:Calibri; font-size: 14px; color: #009CDE'><b>一键下载</b>&nbsp;以下列示的所有询证函</span>");
+            .html("<span style='font-family:Calibri; font-size: 16px; font-weight: bold; color: #009CDE'><i class='fas fa-cloud-download-alt'></i>&nbsp;点击下载</span>");
         btn_download.insertAfter(ele_auditClient);
 
         btn_download.click(function(){
@@ -431,11 +432,11 @@ function letter_download_single_auto() {
 
     // 新建提示1：已回函，开始静默下载
     var mao_reminder_perID = $("<span/>")
-        .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;&nbsp;&nbsp;&nbsp;EasyGoEnhancer 正在为您自动下载询证函... 请耐心等待所有询证函下载完毕后再关闭本网页...</span>");
+        .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;&nbsp;<i class='fas fa-spinner fa-pulse'></i>&nbsp;EasyGoEnhancer 正在为您自动下载询证函... 请耐心等待所有询证函下载完毕后再关闭本网页...</span>");
 
     // 新建提示2：没有回函扫描件
     var mao_nothing_perID = $("<span/>")
-        .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #EEA9B8'>&nbsp;&nbsp;&nbsp;&nbsp;暂未回函！如果已发函很长时间了，请尽快催函，或加强催函力度……</span>");
+        .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #EEA9B8'>&nbsp;&nbsp;暂未回函！如果已发函很长时间了，请尽快催函，或加强催函力度……</span>");
 
     // 查找：下载链接，判断是不是要 下载
     var url = '';
@@ -507,7 +508,7 @@ function XZHCX_download() {
 
     var btn_download = $("<button/>")
         .attr('type','button')
-        .html("<span style='font-family:Calibri; font-size: 16px; color: #009CDE'><b>点击下载</b></span>");
+        .html("<span style='font-family:Calibri; font-size: 16px; font-weight: bold; color: #009CDE'><i class='fas fa-cloud-download-alt'></i>&nbsp;点击下载</span>");
     btn_download.insertAfter(webpage_title);
 
     var btn_reminder = $("<span/>")
@@ -537,7 +538,7 @@ function XZHCX_download() {
         this.style.display = "none";
         
         var mao_reminder = $("<span/>")
-            .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;&nbsp;&nbsp;&nbsp;EasyGoEnhancer 正在为您自动下载&nbsp;&nbsp;</span>");
+            .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;&nbsp;<i class='fas fa-spinner fa-pulse'></i>&nbsp;EasyGoEnhancer 正在为您自动下载&nbsp;&nbsp;</span>");
         mao_reminder.insertAfter(webpage_title);
 
         var mao_reminder2 = $("<span/>")
