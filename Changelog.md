@@ -4,7 +4,7 @@
 ### Added
     * 询证函下载，在重命名后的名称中新增识别是否相符。
 
-    ![img](https://github.com/maoger/EasyGoEnhancer/blob/master/img/EasyGoEnhancer_3.9.9_01.png)
+![img](./img/EasyGoEnhancer_3.9.9_01.png)
 
 ## [3.9.8] - 2020-03-25
 ### Added
