@@ -1,5 +1,5 @@
-EasyGoEnhancer_main();
-function EasyGoEnhancer_main(){
+it_works();
+function it_works(){
     'use strict';
 
     $('title').html('EasyGo | maoyanqing.com');
@@ -9,18 +9,14 @@ function EasyGoEnhancer_main(){
         load_working_hours();
         load_toDoList();
     }
-    // 判断：若为【项目园地 - 询证函】界面，则①添加 批量下载按钮，②更新或保存询证函ID到localStorage
+    // 判断：若为询证函下载主页：①添加 批量下载按钮，②更新或保存询证函ID到localStorage
     else if (window.location.href.indexOf('/Confirmation.aspx') >= 0){
-        letter_download_multi();
-        letter_save_url();
+        download_multi();
+        save_letter();
     }
     // 判断：若为每张询证函界面，自动下载
     else if (window.location.href.indexOf('/ConfirmationEdit.aspx') >= 0 ){
-        letter_download_single_auto();
-    }
-    // 判断：若为【询证函查询】界面，添加批量下载按钮
-    else if (window.location.href.indexOf('/ConfirmationEdit2014.aspx?ID=') >= 0 ){
-        XZHCX_download();
+        download_auto();
     }
     // 判断：修复打印按钮
     else if (window.location.href.indexOf('/RiskManagement/') >= 0){
@@ -93,7 +89,7 @@ function load_toDoList() {
         "margin-right": "30px",
         "color":"#333",
         })
-        .html("<i class='far fa-check-circle'></i>&nbsp;动态报备");
+        .html("动态报备");
     fake_tags.append(DTBB);
 
     // 新建：名为“申报工时”的快捷标签，并插入页面中
@@ -103,7 +99,7 @@ function load_toDoList() {
         "margin-right": "30px",
         "color":"#333",
         })
-        .html("<i class='far fa-clock'></i>&nbsp;申报工时");
+        .html("申报工时");
     fake_tags.append(SBGS);
 
     // 新建：名为“项目园地”的快捷标签，并插入页面中
@@ -113,32 +109,19 @@ function load_toDoList() {
         "margin-right": "30px",
         "color":"#333",
         })
-        .html("<i class='fas fa-sitemap'></i>&nbsp;函证中心");
+        .html("函证中心");
         // <span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>「询证函下载入口」</span>
     fake_tags.append(XMYD);
-
-    // 新建：名为“询证函查询”的快捷标签，并插入页面中
-    var XZHCX = $('<a/>')
-        .attr("href","/Module/Framework/Acpa/Project/ConfirmationList2014.aspx")
-        .attr("target","_blank")
-        .css({
-        "margin-right": "30px",
-        "color":"#333",
-        })
-        .html("<i class='fas fa-search'></i>&nbsp;询证函查询");
-        // <span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>「询证函下载入口」</span>
-    fake_tags.append(XZHCX);
 
     // 新建：名为“最近查看的询证函”的快捷标签，并插入页面中
     if (window.localStorage && localStorage.letter_href) {
         var recent_letter = $('<a/>')
         .attr("href",localStorage.letter_href)
-        .attr("target","_blank")
         .css({
         "margin-right": "30px",
         "color":"#333",
         })
-        .html("<i class='far fa-eye'></i>&nbsp;最近查看的询证函");
+        .html("最近查看的询证函");
         fake_tags.append(recent_letter);
     }
 
@@ -146,7 +129,7 @@ function load_toDoList() {
     var m = 0;
 
     // 加载：从服务器上逐项获取并加载“待办事项”数据
-    for (var i=0; i<toDoList_names.length; i++) {
+    for (var i = 0; i<toDoList_names.length; i++) {
         var name = toDoList_names[i];
 
         // 构建包裹元素
@@ -243,8 +226,7 @@ function load_working_hours(){
 
 
 // ============================= Start: 下载询证函 ========================================
-
-// Start:下载并重命名的一整套方法 ~~~~~~~~~~~~~~~~~~~~~~~~`
+// Start:下载并重命名的一整套方法 ===================================
 /*
 获取 blob
     @param  {String} url 目标文件地址
@@ -302,124 +284,42 @@ function download(url, filename) {
         saveAs(blob, filename);
     })
 };
-// End:下载并重命名的一整套方法 ~~~~~~~~~~~~~~~~~~~~~~~~`
+// End:下载并重命名的一整套方法 ===================================
 
 // 批量下载
-function letter_download_multi(){
+function download_multi(){
     'use strict';
 
-    $(".menubar_title")[0].innerHTML = "<a href='//maoyanqing.com/download/easygoenhancer.html' target='_blank' style='font-family:Calibri; font-size: 26px; color: #009CDE'>EasyGoEnhancer</a>";
+    $(".menubar_title")[0].innerHTML = "EasyGoEnhancer";
 
-    // 页面底部提醒：使用【查询】按钮筛选信息等
-    var ele_footer = $("#ctl00_PageBody_AspNetPager1");
+    // 新建：“下载”按钮
+    var dingWei_multi = $("#ctl00_PageBody_lblFullName");
+    var mao_downloader_multi = $("<button/>")
+        .attr('type','button')
+        .html("<span style='font-family:Calibri; font-size: 14px; color: #9932CD'>一键下载 \>\>以下全部询证函</span>");
+    mao_downloader_multi.insertAfter(dingWei_multi);
+
+    // 新建：提醒
+    var dingWei_title = $("#ctl00_PageBody_AspNetPager1");
     var mao_reminder_multi = $("<td/>")
-        .html("<br/><hr/><b>Notes:</b><br/><span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'><b>1、筛选</b><br/>点击上述【查询】按钮，查看更多选项；<br/>比如：可以按照 “回函扫描创建日期” 、 “回函收件人” 等，先筛选回函结果，再下载...<br/><br/><b>2、建议</b><br/>将浏览器设置为静默下载（不弹出下载框），详见：<a target='_blank' href='//maoyanqing.com/download/easygoenhancer-docs.html' style='font-family: Calibri; font-size: 12px; color: #0000cc;'>开启静默下载的操作提示</a></span>");
-    mao_reminder_multi.insertAfter(ele_footer);
+        .html("<br/><hr/><strong>Notes:</strong><br/><span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'>1、提示<br/>点击上述【查询】按钮，查看更多选项；比如：可以按照 “回函扫描创建日期” 、 “回函收件人” 等，先筛选回函结果，再下载……<br/><br/>2、建议<br/>①将浏览器设置为静默下载（取消“每次下载前提示保存位置”）；<br/>②设置浏览器为“始终允许此网站的弹出式窗口”。<br/><br/>3、受限于网速，反应可能会比较慢……请耐心等待全部下载完成后，再关闭后续的子页面。<br/><br/>4、更多信息，详见：<a target='_blank' href='http://maoyanqing.com/download/easygoenhancer.html' style='font-family: Calibri; font-size: 12px; color: #0000cc;'>EasyGoEnhancer官网</a></span>");
+    mao_reminder_multi.insertAfter(dingWei_title);
 
-    // 下载进度提醒
-    var ele_auditClient = $("#ctl00_PageBody_lblFullName");
-
-    // 用来存储待下载询证函清单
-    var letter_obj = {};
-    var letter_obj2str = '';
-
-    var letter_todo_num = localStorage.letter_download_mark;
-    var letter_todo_page = 0;
-    if (letter_todo_num == undefined){
-        letter_todo_page = 0;
-    }
-    else{
-        letter_todo_page = Math.ceil(letter_todo_num / 10);
-    }
-    
-    if (letter_todo_page > 0){
-        letter_obj2str = localStorage.letter_download;
-        if (letter_obj2str == undefined || letter_obj2str == ''){
-            letter_obj = {};
-        }
-        else{
-            letter_obj = JSON.parse(letter_obj2str);
-        }
-
-        var letter_todo_index = localStorage.letter_download_mark;
-        var letter_href = '';
+    mao_downloader_multi.click(function(){
+        // 打开所有链接
+        var c ='';
         var hrefArr = document.getElementsByTagName('a');
         for ( var i=0; i<hrefArr.length; i++ ){
-            letter_href = hrefArr[i].href;
-            if (letter_href.indexOf('?ID=')>=0){
-                letter_obj[letter_todo_index--] = letter_href;
+            c = hrefArr[i].href;
+
+            if (c.indexOf("ID")>=0){
+                window.open(c);
             }
         }
-        letter_obj2str = JSON.stringify(letter_obj);
-        localStorage.letter_download = letter_obj2str;
-
-        letter_todo_num = Math.max(0,letter_todo_num - 10);
-        letter_todo_page = Math.ceil(letter_todo_num / 10);
-        localStorage.letter_download_mark = letter_todo_num;
-        if (letter_todo_page > 0){
-            __doPostBack('ctl00$PageBody$AspNetPager1',letter_todo_page);
-        }
-    }
-
-    if (letter_todo_num == 0){
-        letter_obj2str = localStorage.letter_download;
-
-        if (letter_obj2str == undefined || letter_obj2str == ""){
-            letter_obj = {};
-        }
-        else{
-            letter_obj = JSON.parse(letter_obj2str);
-        }
-
-        var progress_reminder = "<span style='font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;<i class='fas fa-spinner fa-pulse'></i>&nbsp;EasyGoEnhancer 正在为您自动下载询证函... 请耐心等待所有询证函下载完毕后再关闭本网页...</span>";
-        ele_auditClient.append(progress_reminder);
-
-        for(var p in letter_obj){
-            create_iframe(p,letter_obj[p],0,0);
-        }
-
-        localStorage.removeItem('letter_download');
-        localStorage.removeItem('letter_download_mark');
-
-    }
-
-    // 【判断】是否需要添加：“下载”按钮
-    var letter_todo_total = $("#ctl00_PageBody_AspNetPager1 > table > tbody > tr > td:nth-child(1)").text().split("：")[1].split(" ")[0];
-    if (letter_todo_total > 0 && letter_todo_num == undefined){
-
-        var btn_download = $("<button/>")
-            .attr('type','button')
-            .html("<span style='font-family:Calibri; font-size: 16px; font-weight: bold; color: #009CDE'><i class='fas fa-cloud-download-alt'></i>&nbsp;点击下载</span>");
-        btn_download.insertAfter(ele_auditClient);
-
-        btn_download.click(function(){
-            this.style.display = "none";
-            localStorage.letter_download_mark = letter_todo_total;
-
-            letter_todo_page = Math.ceil(letter_todo_total / 10);
-            if (letter_todo_page>1){
-                __doPostBack('ctl00$PageBody$AspNetPager1',letter_todo_page);
-            }
-            else {
-                location.reload();
-            }
-        })
-    }
+    });
 };
 
-
-// https://www.jianshu.com/p/63ef6b1c08ec
-function create_iframe(id,url,width,height){
-    var iframe = document.createElement("iframe");
-    iframe.id=id;
-    iframe.width=width;
-    iframe.height=height;
-    iframe.src=url;
-    document.body.appendChild(iframe);
-
-};
-
-function letter_download_single_auto() {
+function download_auto() {
     'use strict';
 
     // 重命名取数
@@ -428,17 +328,17 @@ function letter_download_single_auto() {
     var filename = '';
 
     // 定位
-    var ele_perID = $("#ctl00_PageBody_lblConfID");
+    var dingWei_perID = $("#ctl00_PageBody_lblConfID");
 
     // 新建提示1：已回函，开始静默下载
     var mao_reminder_perID = $("<span/>")
-        .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;&nbsp;<i class='fas fa-spinner fa-pulse'></i>&nbsp;EasyGoEnhancer 正在为您自动下载询证函... 请耐心等待所有询证函下载完毕后再关闭本网页...</span>");
+        .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #CDCDCD'>&nbsp;&nbsp;&nbsp;&nbsp;已开始静默下载，稍等片刻……</span>");
 
     // 新建提示2：没有回函扫描件
     var mao_nothing_perID = $("<span/>")
-        .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #EEA9B8'>&nbsp;&nbsp;暂未回函！如果已发函很长时间了，请尽快催函，或加强催函力度……</span>");
+        .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #EEA9B8'>&nbsp;&nbsp;&nbsp;&nbsp;暂未回函！如果已发函很长时间了，请尽快催函，或加强催函力度……</span>");
 
-    // 查找：下载链接，判断是不是要 下载
+    // 查找：下载链接，判断是不是要增加“下载”按钮
     var url = '';
     var c ='';
     var hrefArr = document.getElementsByTagName('a');
@@ -447,7 +347,7 @@ function letter_download_single_auto() {
     var file_type = '';
     var file_type_arr = ['pdf','PDF','jpg','JPG'];
 
-    for (var i=0; i<hrefArr.length; i++ ){
+    for ( var i=0; i<hrefArr.length; i++ ){
         c = hrefArr[i].href;
         file_split = c.split(".");
         file_type = file_split[file_split.length - 1];
@@ -458,11 +358,11 @@ function letter_download_single_auto() {
     }
 
     if (url ==''){
-        mao_nothing_perID.insertAfter(ele_perID );
+        mao_nothing_perID.insertAfter(dingWei_perID );
     }
     else{
         // 如果已回函（url非空），则开始自动下载
-        mao_reminder_perID.insertAfter(ele_perID );
+        mao_reminder_perID.insertAfter(dingWei_perID );
         var j = 0;
         for (i=0; i<hrefArr.length; i++ ){
             c = hrefArr[i].href;
@@ -478,124 +378,22 @@ function letter_download_single_auto() {
                 else{
                     filename = letter_id + '_' + letter_name + '_' + j.toString() + '.' + file_type;
                 };
-                
-                download(url,filename);
+            download(url,filename);
             }
         }
         // 下载完，2分钟后关闭当前页面
         // 低网速下，1分钟可能时间不够
-        // setTimeout(close_tab,120000);
+        setTimeout(close_tab,120000);
     }
 };
 
-/*
 function close_tab(){
     window.opener = null;
     window.open('','_self');
     window.close();
 };
-*/
 
 // ============================= End: 下载询证函 ========================================
-
-// ============================= Start： 【询证函查询】批量下载 ========================================
-
-function XZHCX_download() {
-    'use strict';
-    $(".menubar_title")[0].innerHTML = "<a href='//maoyanqing.com/download/easygoenhancer.html' target='_blank' style='font-family:Calibri; font-size: 26px; color: #009CDE'>EasyGoEnhancer</a>";
-
-    var webpage_title = $('#FrameWork_Acpa_EasyGoSelectIndex');
-
-    var btn_download = $("<button/>")
-        .attr('type','button')
-        .html("<span style='font-family:Calibri; font-size: 16px; font-weight: bold; color: #009CDE'><i class='fas fa-cloud-download-alt'></i>&nbsp;点击下载</span>");
-    btn_download.insertAfter(webpage_title);
-
-    var btn_reminder = $("<span/>")
-        .html("<span style='font-family:Calibri; font-size: 14px; color: #009CDE'>&nbsp;&nbsp;以下列示的所有询证函中&nbsp;&nbsp;</span><span style='font-family:Calibri; font-size: 14px; color: #EEA9B8'>上传日期</span>&nbsp;<kbd>≥</kbd>&nbsp;");
-    btn_reminder.insertAfter(btn_download);
-
-    var input_date = $("<input/>")
-        .attr('id','input_date')
-        .attr('type','date')
-        .attr('value','');
-    input_date.insertAfter(btn_reminder);
-
-    var mao_reminder = $("<p/>")
-        .html("<br/><hr/><span style='font-family:Calibri; font-size: 12px; color: #9E9E9E'><b>【建议】</b>将浏览器设置为静默下载（不弹出下载框），详见：<a target='_blank' href='//maoyanqing.com/download/easygoenhancer-docs.html' style='font-family: Calibri; font-size: 12px; color: #0000cc;'>开启静默下载的操作提示</a></span>");
-    mao_reminder.insertAfter(input_date);
-
-    var date = new Date();
-    var y = date.getFullYear();
-    var m = date.getMonth() + 1;
-    m = m < 10 ? ('0' + m) : m;
-    var d = date.getDate();
-    d = d < 10 ? ('0' + d) : d;
-    var pick_date_str = y + '-' + m + '-' + d;
-    input_date.val(pick_date_str);
-
-    btn_download.click(function(){
-        this.style.display = "none";
-        
-        var mao_reminder = $("<span/>")
-            .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;&nbsp;<i class='fas fa-spinner fa-pulse'></i>&nbsp;EasyGoEnhancer 正在为您自动下载&nbsp;&nbsp;</span>");
-        mao_reminder.insertAfter(webpage_title);
-
-        var mao_reminder2 = $("<span/>")
-            .html("<span style='font-style:italic; font-family:Calibri; font-size: 14px; color: #3F9C35'>&nbsp;&nbsp;的询证函... 请耐心等待所有询证函下载完毕后再关闭本网页...</span>");
-        mao_reminder2.insertAfter(input_date);
-
-        pick_date_str = input_date.val();
-        if (pick_date_str == '' || pick_date_str == undefined){
-            var date = new Date();
-            var y = date.getFullYear();
-            var m = date.getMonth() + 1;
-            m = m < 10 ? ('0' + m) : m;
-            var d = date.getDate();
-            d = d < 10 ? ('0' + d) : d;
-            pick_date_str = y + '-' + m + '-' + d;
-        }
- 
-        XZHCX_download_main(pick_date_str);
-    });
-   
-};
-
-function XZHCX_download_main(pick_date_str){
-    'use strict';
-
-    var filename = '';
-    var url = '';
-    var upload_date_str = '';
-    var upload_date = new Date();
-    var pick_date = new Date();
-    var hrefArr = document.getElementsByTagName('a');
-
-    var file_split = [];
-    var file_type = '';
-    var file_type_arr = ['pdf','PDF','jpg','JPG'];
-
-    for (var i=0; i<hrefArr.length; i++ ){
-        url = hrefArr[i].href;
-        file_split = url.split(".");
-        file_type = file_split[file_split.length - 1];
-        if (file_type_arr.includes(file_type)){
-            upload_date_str = hrefArr[i].parentNode.nextSibling.nextSibling.innerHTML;
-            upload_date = new Date(upload_date_str);
-            pick_date = new Date(pick_date_str);
-
-            if (upload_date >= pick_date){
-                filename = hrefArr[i].innerHTML;
-                download(url,filename);
-            }
-        }
-    }
-
-};
-
-// ============================= End： 【询证函查询】批量下载 ==========================================
-
-
 
 // ============================= Start: 修改打印按钮 ========================================
 function fix_printer(){
@@ -603,7 +401,7 @@ function fix_printer(){
 
     var btns_length = $('.button_bak').length;
     var btn;
-    for (var i=0; i < btns_length; i++){
+    for (var i = 0; i < btns_length; i++){
         btn = $('#Button'+(i+1));
         if (btn.val().indexOf("打印") >= 0){
             btn.removeAttr("onclick");
@@ -615,7 +413,7 @@ function fix_printer(){
 
 
 // ============================= Start: 存储最近一次打开的询证函查询界面 ========================================
-function letter_save_url(){
+function save_letter(){
     'use strict';
     if (window.localStorage){
         var loc = window.location;
