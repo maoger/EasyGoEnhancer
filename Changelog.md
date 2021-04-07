@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.0.6] - 2020-04-08
+### Changed
+  * 更换： `font-awesome`的cdn为[bootcdn](https://www.bootcdn.cn/)。
+
 ## [4.0.5] - 2020-04-03
 ### Changed
   * 优化： 首页询证函智能显示的名称长度，maxLength = 4。
